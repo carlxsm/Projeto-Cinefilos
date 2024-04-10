@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import model.cinema.Filme;
 import model.cinema.Sala;
+import model.lanchonete.ProdutoLanchonete;
 
 public class Main {
     public static void main(String[] args) {
         Filme meuFilme = new Filme("inception");
         meuFilme.setHoraFilme(LocalTime.of(18, 30));
         meuFilme.setDataFilme(LocalDate.of(2024, 4, 15));
+        ProdutoLanchonete meuProduto = new ProdutoLanchonete("Pipoca", 8, 1);
 
         Sala salaA = new Sala(20, null, "A", "Inception", null);
 
@@ -19,6 +21,6 @@ public class Main {
                 " Filme: " + meuFilme.getNomeFilme() + "\n Horario de exibição: " + meuFilme.getHoraFilme() + " "
                         + meuFilme.getDataFilme());
 
-        System.out.println();
+        System.out.println(meuProduto.getDescricao());
     }
 }

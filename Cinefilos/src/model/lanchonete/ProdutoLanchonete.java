@@ -1,6 +1,7 @@
 package model.lanchonete;
 
 import model.ProdutoInterface;
+import model.cinema.Filme;
 
 public class ProdutoLanchonete implements ProdutoInterface {
     private String nome;
@@ -37,9 +38,16 @@ public class ProdutoLanchonete implements ProdutoInterface {
         this.quantidade = quantidade;
     }
 
+    public int adicionarProduto(ProdutoLanchonete produto) {
+        quantidade.add(produto);
+        return quantidade.indexOf(produto);
+    }
+
     @Override
     public String getDescricao() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDescricao'");
+        return ("Descrição do produto: [ \nNome: " + getNome() +
+                "\nPreço: " + getPreco() +
+                "\nQuantidade: " + getQuantidade() +
+                "\n]");
     }
 }
