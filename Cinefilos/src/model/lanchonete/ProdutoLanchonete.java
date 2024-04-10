@@ -1,6 +1,8 @@
 package model.lanchonete;
 
-public class ProdutoLanchonete {
+import model.ProdutoInterface;
+
+public class ProdutoLanchonete implements ProdutoInterface {
     private String nome;
     private double preco;
     private int quantidade;
@@ -34,4 +36,10 @@ public class ProdutoLanchonete {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
- }
+
+    @Override
+    public String getDescricao() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDescricao'");
+    }
+}

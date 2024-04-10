@@ -21,4 +21,10 @@ public class ProdutoIngressoCinema implements ProdutoInterface {
         return 0;
 
     }
+
+    @Override
+    public String getDescricao() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDescricao'");
+    }
 }
