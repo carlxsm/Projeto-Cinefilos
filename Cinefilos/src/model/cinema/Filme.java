@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Filme {
 
+
     private String nomeFilme;
     private LocalTime horaFilme;
     private LocalDate dataFilme;
