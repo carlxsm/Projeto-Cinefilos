@@ -1,9 +1,9 @@
 package model.cinema;
 
-import model.Produto;
+import model.ProdutoInterface;
 import model.sistema.usuario.Usuario;
 
-public class ProdutoIngressoCinema implements Produto {
+public class ProdutoIngressoCinema implements ProdutoInterface {
     private Filme filme;
     private Sala sala;
     private Usuario usuario;
@@ -15,8 +15,9 @@ public class ProdutoIngressoCinema implements Produto {
         this.usuario = usuario;
         this.poltrona = poltrona;
     }
-    public double getPreco(){
-        //TODO implementar metodo
+
+    public double getPreco() {
+        // TODO implementar metodo
         return 0;
 
     }
