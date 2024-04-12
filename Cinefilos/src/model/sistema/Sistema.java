@@ -5,7 +5,7 @@ import model.sistema.usuario.Usuario;
 import java.util.ArrayList;
 
 public class Sistema {
-    private static int LOGADO = 0;
+
     private static boolean LOGADO = false;
 
     private final ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();

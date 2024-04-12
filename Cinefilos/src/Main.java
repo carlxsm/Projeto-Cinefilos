@@ -1,9 +1,22 @@
+import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
+import model.sistema.usuario.CategoriaUsuario;
+import model.sistema.usuario.Cliente;
+import model.sistema.usuario.Usuario;
+import view.TelaCliente;
+
+import java.util.Scanner;
 
 public class Main {
 
+    private static Scanner scanner = new Scanner(System.in);
+    private static Cliente cliente = new Cliente("Carlos","admin", CategoriaUsuario.CLIENTE);
     public static void main(String[] args) {
         Sistema sistema = new Sistema();
+        ProdutoLanchonete refrigerante = new ProdutoLanchonete("Refrigerante",9.99,1);
+        ProdutoLanchonete pipoca = new ProdutoLanchonete("Pipoa",24.99,1);
+        cliente.getCarrinhoCompras().adicionarProduto(refrigerante);
+        cliente.getCarrinhoCompras().adicionarProduto(pipoca);
         // tela1View tela1 = new tela1View();
         // tela1.exibiTela();
         do{
@@ -14,8 +27,84 @@ public class Main {
             // checa se vai sair da aplicação
                 // chamadaDeSair();
         }while (sistema.isLogado());
-        System.out.println("Hello world!");
+        telaCliente();
     }
+
+    //Sistema de login vai retornar um usuario
+    // if(usuario.CategoriaUsuario == Cliente)
+    public static void telaCliente(){
+        TelaCliente telaCliente = new TelaCliente();
+        while(cliente!= null) {
+            if (cliente.getCarrinhoCompras().getCarrinhoDeCompras().isEmpty()){ //TODO refatorar isso depois
+                telaCliente.imprimeDadosCliente(cliente);
+                telaCliente.imprimeOpcoesCompraCliente();
+                int entrada = Integer.parseInt(scanner.next());
+                switch (entrada) {
+                    case 0:
+                        System.out.println("Tela de Ingresso");
+                        break;
+                    case 1:
+                        System.out.println("Tela de Lanchonete");
+                        break;
+                }
+            }else{
+                telaCliente.imprimeDadosCliente(cliente);
+                telaCliente.imprimeOpcoesCompraCliente();
+                telaCliente.imprimeValoresPedido(cliente);
+                telaCliente.imprimeOpcoesFinalizarCompra();
+                int entrada = Integer.parseInt(scanner.next());
+                switch (entrada){
+                    case 0:
+                        System.out.println("Tela de Ingresso");
+                        break;
+                    case 1:
+                        System.out.println("Tela de Lanchonete");
+                        break;
+                    case 2:
+                        System.out.println("Pedido finalizado");
+                        break;
+                    case 3:
+                        System.out.println("Carrinho de compras esvaziado!");
+                        break;
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Sistema.chamadaDeCriar(){
         //gerenciaSistema.checaSeGerente()
