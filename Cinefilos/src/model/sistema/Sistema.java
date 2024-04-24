@@ -5,29 +5,33 @@ import model.sistema.usuario.Usuario;
 import java.util.ArrayList;
 
 public class Sistema {
-    private static int LOGADO = 0;
-    private static boolean LOGADO = false;
+
+    private static Usuario LOGADO = null;
 
     private final ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
 
     public Sistema() {}
 
     public boolean isLogado(){
-        if (LOGADO){
+        if (LOGADO != null){
             return true;
         }else {
             return false;
         }
     }
-    public void desloga(){
-        LOGADO = false;
+    public Usuario logar(String login, String senha){
+        for (Usuario usuario: usuariosCadastrados){
+            if (usuario.getNome().equals(login) && usuario.getSenha().equals(senha)){
+                return usuario;
+            }
+        }
+        throw new IllegalArgumentException("Usuario não existe");
     }
-    public void logar(){
-        //TODO
-    }
+
     public void deslogar(){
         //TODO
     }
+
     public void criarConta(){
         //TODO
     }
