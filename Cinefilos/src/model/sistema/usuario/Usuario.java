@@ -7,11 +7,10 @@ public abstract class Usuario {
     private String senha;
     private CategoriaUsuario categoriaUsuario;
 
-
-    public Usuario(String nome, String senha,CategoriaUsuario categoriaUsuario) {
+    public Usuario(String nome, String senha, int categoriaUsuario) {
         this.nome = nome;
         this.senha = senha;
-        this.categoriaUsuario = categoriaUsuario;
+        this.categoriaUsuario = CategoriaUsuario.values()[categoriaUsuario];
     }
 
 
@@ -30,7 +29,6 @@ public abstract class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
 
     public CategoriaUsuario getCategoriaUsuario() {
         return categoriaUsuario;
