@@ -1,6 +1,7 @@
 import controller.CarrinhoCompras;
 import controller.GerenciaCinema;
 import controller.GerenciaLanchonete;
+import facades.SistemaFacade;
 import model.cinema.Filme;
 import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
@@ -19,16 +20,23 @@ public class Main {
     private static GerenciaLanchonete gerenciaLanchonete = new GerenciaLanchonete();
 
     public static void main(String[] args) {
-        Sistema sistema = new Sistema();
+
+        SistemaFacade sistemaFacade = new SistemaFacade();
+
+        sistemaFacade.iniciaAplicacao();
+        sistemaFacade.compraProduto();
+
+
         gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete("Refrigerante",9.99,99));
+        gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete("Pipoca",24.99,99));
         gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete("Pipoca",24.99,99));
         cliente.getCarrinhoCompras().add(GerenciaLanchonete.getProdutosDisponiveis().get(0));
         cliente.getCarrinhoCompras().add(GerenciaLanchonete.getProdutosDisponiveis().get(1));
 
         do{
             // TODO aqui vai ser a tela inicial de Login / Cria conta / Sair
-        }while (sistema.isLogado());
         telaCliente();
+        }while (true);
     }
 
     public static void telaCliente(){

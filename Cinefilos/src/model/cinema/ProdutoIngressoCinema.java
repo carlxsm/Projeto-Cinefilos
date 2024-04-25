@@ -7,14 +7,12 @@ public class ProdutoIngressoCinema extends Produto {
     private Filme filme;
     private Sala sala;
     private Usuario usuario;
-    private int poltrona;
 
-    public ProdutoIngressoCinema(String nome, double preco, int quantidade, Filme filme, Sala sala, Usuario usuario, int poltrona) {
+    public ProdutoIngressoCinema(String nome, double preco, int quantidade, Filme filme, Sala sala, Usuario usuario) {
         super(nome, preco, quantidade);
         this.filme = filme;
         this.sala = sala;
         this.usuario = usuario;
-        this.poltrona = poltrona;
     }
 
     public double getPreco(){

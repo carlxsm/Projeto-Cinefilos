@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class Filme {
 
     private String nomeFilme;
+    private int horarioFilme;
+    private int duracao;
 
     public Filme(String nomeFilme) {
         this.nomeFilme = nomeFilme;

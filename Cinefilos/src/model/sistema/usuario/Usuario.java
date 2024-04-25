@@ -14,6 +14,7 @@ public abstract class Usuario {
         this.categoriaUsuario = categoriaUsuario;
     }
 
+
     public String getNome() {
         return nome;
     }

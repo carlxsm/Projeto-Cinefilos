@@ -3,18 +3,18 @@ package controller;
 import model.cinema.Filme;
 import model.cinema.Sala;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GerenciaCinema {
-    private static SortedSet<Sala> salasCinema = new TreeSet<>();
-    private static SortedSet<Filme> filmesEmCartaz = new TreeSet<>();
+    private static List<Sala> salasCinema = new ArrayList<>();
+    private static List<Filme> filmesEmCartaz = new ArrayList<>();
 
-    public static SortedSet<Sala> getSalasCinema() {
+    public static List<Sala> getSalasCinema() {
         return salasCinema;
     }
 
-    public static SortedSet<Filme> getFilmesEmCartaz() {
+    public static List<Filme> getFilmesEmCartaz() {
         return filmesEmCartaz;
     }
 

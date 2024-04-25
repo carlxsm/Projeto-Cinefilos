@@ -1,6 +1,8 @@
 package controller;
 
 import model.Produto;
+import model.sistema.Sistema;
+import model.sistema.usuario.CategoriaUsuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class CarrinhoCompras {
             throw new IllegalArgumentException("Esse produto não esta no carrinho");
         }
     }
+
     public void esvaziarCarrinho(){
         carrinhoDeCompras.clear();
     }

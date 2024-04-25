@@ -10,22 +10,13 @@ public class Sistema {
 
     private final ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
 
-    public Sistema() {}
 
-    public boolean isLogado(){
-        if (LOGADO != null){
-            return true;
-        }else {
-            return false;
-        }
+    public static Usuario getLOGADO() {
+        return LOGADO;
     }
-    public Usuario logar(String login, String senha){
-        for (Usuario usuario: usuariosCadastrados){
-            if (usuario.getNome().equals(login) && usuario.getSenha().equals(senha)){
-                return usuario;
-            }
-        }
-        throw new IllegalArgumentException("Usuario não existe");
+
+    private static void setLOGADO(Usuario LOGADO) {
+        Sistema.LOGADO = LOGADO;
     }
 
     public void deslogar(){
