@@ -6,14 +6,12 @@ public class Sala {
     private final int  QUANTIDADE_POLTRONAS;
     private ArrayList<Filme> programacaoFilmes = new ArrayList<>();
     private String nomeSala;
-    private String filmeAtual;
     private TipoSala tipoSala;
 
-    public Sala(int QUANTIDADE_POLTRONAS, ArrayList<Filme> programacaoFilmes, String nomeSala, String filmeAtual, TipoSala tipoSala) {
+    public Sala(int QUANTIDADE_POLTRONAS, ArrayList<Filme> programacaoFilmes, String nomeSala, TipoSala tipoSala) {
         this.QUANTIDADE_POLTRONAS = QUANTIDADE_POLTRONAS;
         this.programacaoFilmes = programacaoFilmes;
         this.nomeSala = nomeSala;
-        this.filmeAtual = filmeAtual;
         this.tipoSala = tipoSala;
     }
 
@@ -33,13 +31,6 @@ public class Sala {
         this.nomeSala = nomeSala;
     }
 
-    public String getFilmeAtual() {
-        return filmeAtual;
-    }
-
-    public void setFilmeAtual(String filmeAtual) {
-        this.filmeAtual = filmeAtual;
-    }
     public TipoSala getTipoSala() {
         return tipoSala;
     }

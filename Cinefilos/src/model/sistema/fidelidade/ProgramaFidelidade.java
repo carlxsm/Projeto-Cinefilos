@@ -27,4 +27,10 @@ public class ProgramaFidelidade {
     public void atualizaNivel(){
         //TODO Atualiza Nível
     }
+    public double calculaDesconto(double valor){
+        if (valor >= fidelidade.getDesconto()){
+            return valor * fidelidade.getPrecoDesconto();
+        }
+        return valor;
+    }
 }

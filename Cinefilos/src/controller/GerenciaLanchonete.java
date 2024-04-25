@@ -2,14 +2,16 @@ package controller;
 
 import model.lanchonete.ProdutoLanchonete;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class GerenciaLanchonete {
 
-    private SortedSet<ProdutoLanchonete> produtosDisponiveis = new TreeSet<>();
+    private static List<ProdutoLanchonete> produtosDisponiveis = new ArrayList<>();
 
-    public SortedSet<ProdutoLanchonete> getProdutosDisponiveis(){
+    public static List<ProdutoLanchonete> getProdutosDisponiveis(){
         return produtosDisponiveis;
     }
     public void adicionaProduto(ProdutoLanchonete produtoLanchonete){

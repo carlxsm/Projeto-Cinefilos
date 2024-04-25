@@ -1,8 +1,20 @@
+import java.util.Scanner;
+
+import controller.CarrinhoCompras;
+import controller.GerenciaCinema;
+import controller.GerenciaLanchonete;
+import model.cinema.Filme;
+import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
 import model.sistema.fidelidade.NivelFidelidade;
 import model.sistema.usuario.Cliente;
 
 public class Main {
+
+    private static final Scanner scanner = new Scanner(System.in);
+    private static Cliente cliente = new Cliente("Carlos", "admin", 0, 100);
+    private static GerenciaCinema gerenciaCinema = new GerenciaCinema();
+    private static GerenciaLanchonete gerenciaLanchonete = new GerenciaLanchonete();
 
     public static void main(String[] args) {
         // Criando um novo cliente com 100 pontos iniciais
@@ -78,5 +90,4 @@ public class Main {
     // throw error("")
     // }
 
-    // }
 }

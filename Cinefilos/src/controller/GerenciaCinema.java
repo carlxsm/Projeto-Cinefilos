@@ -7,14 +7,14 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class GerenciaCinema {
-    private SortedSet<Sala> salasCinema = new TreeSet<>();
-    private SortedSet<Filme> filmesEmCartaz = new TreeSet<>();
+    private static SortedSet<Sala> salasCinema = new TreeSet<>();
+    private static SortedSet<Filme> filmesEmCartaz = new TreeSet<>();
 
-    public SortedSet<Sala> getSalasCinema() {
+    public static SortedSet<Sala> getSalasCinema() {
         return salasCinema;
     }
 
-    public SortedSet<Filme> getFilmesEmCartaz() {
+    public static SortedSet<Filme> getFilmesEmCartaz() {
         return filmesEmCartaz;
     }
 
