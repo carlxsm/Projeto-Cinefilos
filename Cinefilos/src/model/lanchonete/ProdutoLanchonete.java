@@ -38,11 +38,6 @@ public class ProdutoLanchonete implements ProdutoInterface {
         this.quantidade = quantidade;
     }
 
-    public int adicionarProduto(ProdutoLanchonete produto) {
-        quantidade.add(produto);
-        return quantidade.indexOf(produto);
-    }
-
     @Override
     public String getDescricao() {
         return ("Descrição do produto: [ \nNome: " + getNome() +
