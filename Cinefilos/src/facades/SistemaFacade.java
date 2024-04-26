@@ -16,20 +16,55 @@ public class SistemaFacade {
 
     GerenciaSistema gerenciaSistema = new GerenciaSistema();
     public static Usuario usuarioLogado = Sistema.getLOGADO(); // gerente ou usuario
-    public static Usuario usuarioLogadoTeste = Sistema.getLOGADO(); // gerente ou usuario
 
 
     //Sistema
     public void abreCinema(){
         //TODO checar se tem arquivo pra carregar as listas
+        //TODO Carrega lista Filmes cinema
+        // TODO Carrega lista Salas cinema
+        // TODO Carrega lista de Produtos lanchonete
+        // TODO Carrega lista de Usuarios cadastrados
+        // TODO Carrega lista de vendas realizadas
     }
     public void fechaCinema(){
         // TODO salva as listas no arquivo
+        // TODO salva lista Filmes cinema
+        // TODO salva lista Salas cinema
+        // TODO salva lista de Produtos lanchonete
+        // TODO salva lista de Usuarios cadastrados
+        // TODO salva lista de vendas realizadas
     }
-    public void criarConta(){}
-    public void logar(){}
-    public void deslogar(){}
-    public void finalizaCompra(){}
+    public void criarContaCliente(String nome, String senha){
+        try {
+            gerenciaSistema.registrarNovoCliente(nome,senha);
+        }catch (IllegalArgumentException iae){
+            System.out.println();
+        }
+    }
+    public void criarContaGerente(){
+        gerenciaSistema.registraNovoGerente(null,null);
+    }
+
+    public void fazerLogin(String nome, String senha){
+        if (!gerenciaSistema.getSistema().verificaUsuarioExiste(nome)){
+            System.out.println("O usuário não existe.");
+        }
+        try {
+            gerenciaSistema.fazerLogin(nome,senha);
+        }catch (IllegalArgumentException iae){
+            System.out.println("Senha incorreta");
+        }
+    }
+
+    public void deslogar(){
+        gerenciaSistema.deslogar();
+    }
+
+    public CategoriaUsuario getTipoUsuarioLogado() {
+        return gerenciaSistema.getCategoriaUsuario();
+    }
+
 
     // Cliente
     public void adicionaProdutoCarrinhoCompras(Produto produto){
@@ -44,6 +79,10 @@ public class SistemaFacade {
             ((Cliente) usuarioLogado).getCarrinhoCompras().removeProduto(produto);
         }
         throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
+    }
+
+    public void limpaCarrinhoCompras(){
+        ((Cliente) usuarioLogado).getCarrinhoCompras().esvaziarCarrinho();
     }
 
     public void verCarrinho(){
@@ -67,6 +106,13 @@ public class SistemaFacade {
         }
     }
 
+    public double finalizaCompra(){
+        double total = ((Cliente)usuarioLogado).getCarrinhoCompras().finalizaPedido();
+        ((Cliente)usuarioLogado).getProgramaFidelidade().adicionaPontos(total);
+        ((Cliente)usuarioLogado).getProgramaFidelidade().atualizaNivel();
+        return total;
+    }
+
     // Gerente
     public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE){
@@ -83,12 +129,30 @@ public class SistemaFacade {
 
     }
 
-// CARLOS COM SISTEMA
-// Quem ficar com Cliente vai definir como vai ser o relacionamento dos controllers com a view : Marcos
-// Quem ficar com Gerente vai definir como vai ser o relacionamento dos controllers com a view : Mateus
 
-// Definir como será o Ingresso, horario filme, como isso vai ser organizado na lista e no ingresso.
+    //util
+    public int entradaInteiro(){
+        if (Sistema.scan.hasNextInt()){
+            return Sistema.scan.nextInt();
+        }
+        System.out.println("Digite um número inteiro");
+        return entradaInteiro();
+    }
 
+    public String entradaString(){
+        String entrada = Sistema.scan.next();
+        try {
+            gerenciaSistema.validaNomeSenha(entrada);
+            return entrada;
+        }catch (IllegalArgumentException iae){
+            System.out.println("Entrada inválida, tente novamente");
+        }
+        return entradaString();
+    }
 
-
+    public boolean isLogado(){
+        if (Sistema.getLOGADO()!=null){
+            return true;
+        }return false;
+    }
 }

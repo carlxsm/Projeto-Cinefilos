@@ -2,7 +2,7 @@ package controller;
 
 import model.Produto;
 import model.sistema.Sistema;
-import model.sistema.usuario.CategoriaUsuario;
+import model.sistema.usuario.Cliente;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ public class CarrinhoCompras {
         carrinhoDeCompras.add(produto);
         return carrinhoDeCompras.indexOf(produto);
     }
+
     public void removeProduto(Produto produto) {
         try{
             carrinhoDeCompras.remove(produto);
@@ -37,5 +38,18 @@ public class CarrinhoCompras {
         }
         return total;
     }
+
+    public double finalizaPedido(){
+        double total = valorTotalCarrinhoCompras();
+        if (total<= 0){
+            throw new IllegalArgumentException("Não há produtos no carrinho!");
+        }
+        if (total >= ((Cliente)Sistema.getLOGADO()).getProgramaFidelidade().getFidelidade().getValorInicialDesconto()){
+            return total* ((Cliente)Sistema.getLOGADO()).getProgramaFidelidade().getFidelidade().getValorDesconto();
+        }
+        return total;
+    }
+
+
 
 }

@@ -1,16 +1,14 @@
 package model.sistema.usuario;
 
-import model.sistema.fidelidade.ProgramaFidelidade;
-
 public abstract class Usuario {
     private String nome;
     private String senha;
     private CategoriaUsuario categoriaUsuario;
 
-    public Usuario(String nome, String senha, int categoriaUsuario) {
+    public Usuario(String nome, String senha, CategoriaUsuario categoriaUsuario) {
         this.nome = nome;
         this.senha = senha;
-        this.categoriaUsuario = CategoriaUsuario.values()[categoriaUsuario];
+        this.categoriaUsuario = categoriaUsuario;
     }
 
 
