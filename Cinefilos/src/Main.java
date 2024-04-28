@@ -45,13 +45,16 @@ public class Main {
                         while (Sistema.getLOGADO() != null){
                             TelaCliente.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
                             //TODO view
+                            System.out.println("1 - Filmes | 2 - Lanchonete | 3 - Fechar pedido | 4 - Deslogar"); // TODO fazer com que só exiba a op. 3 se o carrinho !empty()
                             switch (Sistema.scan.nextInt()){
                                 case 1: // exibição
                                     sistemaFacade.exibeIngressosDisponiveis();
                                     System.out.println("1 - Comprar | 2 - Voltar");
                                     switch (Sistema.scan.nextInt()){
                                         case 1:
-                                            System.out.println("Nome do filme");
+                                            System.out.println("Insira o código do ingresso que deseja comprar");
+                                            System.out.println("Insira a quantidade");
+                                            sistemaFacade.adicionaIngressoCinemaCarrinhoCompras(sistemaFacade.entradaInteiro());
                                             // escolher o filme {nomeFilme, sala, horario}
 
                                                 // adicionaIngresso ao carrinho

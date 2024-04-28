@@ -47,8 +47,9 @@ public class GerenciaCinema {
 
     public void criaIngressos(Filme filme, Sala sala, int horario){
         List<ProdutoIngressoCinema> ingressos = new ArrayList<>();
+        int codigoIngresso = GerenciaSistema.geraCodigo();
         for (int i = 0; i < sala.getTipoSala().getQuantidadePoltronas();i++){
-            ingressos.add(new ProdutoIngressoCinema(filme,sala,i,horario));
+            ingressos.add(new ProdutoIngressoCinema(filme,sala,i,horario,codigoIngresso));
         }
         ingressosDoCinema.add(ingressos);
     }
@@ -58,7 +59,8 @@ public class GerenciaCinema {
         Set<String> chavesUnicas = new HashSet<>();
         for (List<ProdutoIngressoCinema> ingresso: ingressosDoCinema){
             for (ProdutoIngressoCinema prodIngresso: ingresso){
-                String chaveUnica = prodIngresso.getFilme().getNomeFilme()+ " | "+prodIngresso.getSala().getNomeSala() +" | "+ prodIngresso.getHorario();
+                String chaveUnica = prodIngresso.getFilme().getNomeFilme()+ " | "+prodIngresso.getSala().getNomeSala() +" | "+ prodIngresso.getHorario()+ " | "
+                        +"Cod: "+ prodIngresso.getCodigo()+"| Ingressos disponiveis:  "+ quantidadeDeIngressosDisponiveis(prodIngresso.getCodigo());
                 if (!chavesUnicas.contains(chaveUnica)){
                     ingressosDisponiveis.add(chaveUnica);
                     chavesUnicas.add(chaveUnica);
@@ -66,6 +68,18 @@ public class GerenciaCinema {
             }
         }
         return ingressosDisponiveis;
+    }
+
+    public int quantidadeDeIngressosDisponiveis(int codigo){
+        int quantidade = 0;
+        for (List<ProdutoIngressoCinema> ingresso: ingressosDoCinema){
+            for (ProdutoIngressoCinema prodIngresso: ingresso){
+                if (prodIngresso.getCodigo() == codigo){
+                    quantidade++;
+                }
+            }
+        }
+        return quantidade;
     }
 
     public Sala getSalaCinema(int indice){

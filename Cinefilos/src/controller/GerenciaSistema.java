@@ -8,6 +8,7 @@ import model.sistema.usuario.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GerenciaSistema {
 
@@ -84,5 +85,9 @@ public class GerenciaSistema {
 
     public Sistema getSistema(){
         return sistema;
+    }
+    public static int geraCodigo(){
+        Random random = new Random();
+        return random.nextInt(1000,9999);
     }
 }

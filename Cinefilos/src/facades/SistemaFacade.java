@@ -118,7 +118,6 @@ public class SistemaFacade {
         for (String ingresso: gerenciaCinema.getIngressosDisponiveis()){
             System.out.println(ingresso);
         }
-        System.out.println("Tamanho "+ gerenciaCinema.getIngressosDisponiveis().size());
     }
 
     public void verProdutoLanchonete(){
