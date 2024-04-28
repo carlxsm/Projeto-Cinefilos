@@ -1,13 +1,11 @@
 package controller;
 
+import model.Produto;
 import model.cinema.Filme;
 import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GerenciaCinema {
     private static List<Sala> salasCinema = new ArrayList<>();
@@ -47,7 +45,7 @@ public class GerenciaCinema {
 
     public void criaIngressos(Filme filme, Sala sala, int horario){
         List<ProdutoIngressoCinema> ingressos = new ArrayList<>();
-        int codigoIngresso = GerenciaSistema.geraCodigo();
+        String codigoIngresso = "C"+GerenciaSistema.geraCodigo();
         for (int i = 0; i < sala.getTipoSala().getQuantidadePoltronas();i++){
             ingressos.add(new ProdutoIngressoCinema(filme,sala,i,horario,codigoIngresso));
         }
@@ -70,11 +68,11 @@ public class GerenciaCinema {
         return ingressosDisponiveis;
     }
 
-    public int quantidadeDeIngressosDisponiveis(int codigo){
+    public int quantidadeDeIngressosDisponiveis(String codigo){
         int quantidade = 0;
         for (List<ProdutoIngressoCinema> ingresso: ingressosDoCinema){
             for (ProdutoIngressoCinema prodIngresso: ingresso){
-                if (prodIngresso.getCodigo() == codigo){
+                if (prodIngresso.getCodigo().equals(codigo)){
                     quantidade++;
                 }
             }
@@ -82,10 +80,48 @@ public class GerenciaCinema {
         return quantidade;
     }
 
+    public static Produto getIngressoPorCodigo(String cod){
+        for (List<ProdutoIngressoCinema> ingresso: ingressosDoCinema){
+            for (ProdutoIngressoCinema prodIngresso: ingresso){
+                if (prodIngresso.getCodigo().equalsIgnoreCase(cod)){
+                    return prodIngresso;
+                }
+            }
+        }
+        return null;
+        //throw new IllegalArgumentException("Não existe ingresso com código informado.");
+    }
+
+
+    public static void removeIngressoPorCodigo(String cod) {
+        Iterator<List<ProdutoIngressoCinema>> iterator = ingressosDoCinema.iterator();
+        while (iterator.hasNext()) {
+            List<ProdutoIngressoCinema> listaIngressos = iterator.next();
+            boolean ingressoRemovido = false; // Flag para controle da remoção
+            for (ProdutoIngressoCinema prodIngresso : listaIngressos) {
+                if (prodIngresso.getCodigo().equalsIgnoreCase(cod)) {
+                    listaIngressos.remove(prodIngresso); // Remove apenas o ingresso específico
+                    ingressoRemovido = true; // Marca como removido
+                    break; // Sai do loop interno ao encontrar o ingresso
+                }
+            }
+
+            // Se nenhum ingresso foi removido na iteração atual, verifica se a lista está vazia
+            if (!ingressoRemovido && listaIngressos.isEmpty()) {
+                iterator.remove(); // Remove a lista vazia se não houver mais ingressos
+            }
+        }
+    }
+
+
     public Sala getSalaCinema(int indice){
         return salasCinema.get(indice);
     }
     public Filme getFilmeNaSala(int indice){
         return filmesEmCartaz.get(indice);
+    }
+
+    public static List<List<ProdutoIngressoCinema>> getIngressosDoCinema() {
+        return ingressosDoCinema;
     }
 }

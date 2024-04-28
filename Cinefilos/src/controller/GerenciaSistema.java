@@ -86,8 +86,8 @@ public class GerenciaSistema {
     public Sistema getSistema(){
         return sistema;
     }
-    public static int geraCodigo(){
+    public static String geraCodigo(){
         Random random = new Random();
-        return random.nextInt(1000,9999);
+        return String.valueOf(random.nextInt(1000,9999));
     }
 }

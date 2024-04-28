@@ -5,6 +5,7 @@ import controller.GerenciaLanchonete;
 import controller.GerenciaSistema;
 import model.Produto;
 import model.cinema.Filme;
+import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
 import model.cinema.TipoSala;
 import model.lanchonete.ProdutoLanchonete;
@@ -13,6 +14,8 @@ import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
 import model.sistema.usuario.Gerente;
 import model.sistema.usuario.Usuario;
+
+import java.util.List;
 
 public class SistemaFacade {
 
@@ -71,42 +74,35 @@ public class SistemaFacade {
 
 
     // Cliente
-    public void adicionaProdutoLanchoneteCarrinhoCompras(int produto){
+    public void adicionaProdutoCarrinhoCompras(String codProduto, int quantidade){
         try{
-            Produto produtoEscolhido = GerenciaLanchonete.getProdutosDisponiveis().get(produto);
-            ((Cliente) usuarioLogado).getCarrinhoCompras().adicionarProduto(produtoEscolhido);
+            ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().adicionarProduto(codProduto, quantidade);
         }catch (IndexOutOfBoundsException iobe){
             System.out.println(iobe.getMessage());
         }
     }
 
-    public void adicionaIngressoCinemaCarrinhoCompras(int produto){
-        try{
-            //Produto produtoEscolhido = GerenciaCinema.getProdutosDisponiveis().get(produto);
-            //((Cliente) usuarioLogado).getCarrinhoCompras().adicionarProduto(produtoEscolhido);
-        }catch (IndexOutOfBoundsException iobe){
-            System.out.println(iobe.getMessage());
-        }
-    }
 
     public void removeProdutoCarrinhoCompras(Produto produto){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
-            ((Cliente) usuarioLogado).getCarrinhoCompras().removeProduto(produto);
+            ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().removeProduto(produto);
         }
         throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
 
     public void limpaCarrinhoCompras(){
-        ((Cliente) usuarioLogado).getCarrinhoCompras().esvaziarCarrinho();
+        ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().esvaziarCarrinho();
     }
 
     public void verCarrinho(){
+        System.out.println("Carrinho de compras:");
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
-            for (Produto produto: ((Cliente) usuarioLogado).getCarrinhoCompras().getCarrinhoDeCompras()){
-                System.out.println(produto.getNome()); // TODO fazer um toString | Definir toString do Ingresso e do ProdutoLanchonete | Nome,Preco e Index
+            for (Produto produto: ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().getCarrinhoDeCompras()){
+                System.out.println(produto);
             }
+        }else {
+            throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
         }
-        throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
 
     public void verFilmesDisponiveis(){
@@ -127,9 +123,9 @@ public class SistemaFacade {
     }
 
     public double finalizaCompra(){
-        double total = ((Cliente)usuarioLogado).getCarrinhoCompras().finalizaPedido();
-        ((Cliente)usuarioLogado).getProgramaFidelidade().adicionaPontos(total);
-        ((Cliente)usuarioLogado).getProgramaFidelidade().atualizaNivel();
+        double total = ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().finalizaPedido();
+        ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().adicionaPontos(total);
+        ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().atualizaNivel();
         return total;
     }
 
@@ -185,5 +181,15 @@ public class SistemaFacade {
         if (Sistema.getLOGADO()!=null){
             return true;
         }return false;
+    }
+
+    public void teste(){
+        int total = 0;
+        for (List<ProdutoIngressoCinema> lista1: gerenciaCinema.getIngressosDoCinema()){
+            for (Produto produto: lista1){
+                total++;
+            }
+        }
+        System.out.println(total);
     }
 }

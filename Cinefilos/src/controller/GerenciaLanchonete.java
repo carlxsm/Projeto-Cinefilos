@@ -1,5 +1,6 @@
 package controller;
 
+import model.Produto;
 import model.lanchonete.ProdutoLanchonete;
 
 import java.util.ArrayList;
@@ -14,6 +15,12 @@ public class GerenciaLanchonete {
     public static List<ProdutoLanchonete> getProdutosDisponiveis(){
         return produtosDisponiveis;
     }
+
+    public static Produto getProdLanchonetePorCodigo(String codigo) {
+        //TODO implementar esse método como no GerenciaCinema
+        return null;
+    }
+
     public void adicionaProduto(ProdutoLanchonete produtoLanchonete){
         produtosDisponiveis.add(produtoLanchonete);
     }

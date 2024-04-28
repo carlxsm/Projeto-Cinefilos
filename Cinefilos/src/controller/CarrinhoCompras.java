@@ -14,9 +14,32 @@ public class CarrinhoCompras {
         return carrinhoDeCompras;
     }
 
-    public int adicionarProduto(Produto produto) {
-        carrinhoDeCompras.add(produto);
-        return carrinhoDeCompras.indexOf(produto);
+    public void adicionarProduto(String codigo, int quantidade) {
+        if (codigo.startsWith("C") || codigo.startsWith("c")){
+            for (int i = 0; i < quantidade; i++){
+                try{
+                    Produto produto = GerenciaCinema.getIngressoPorCodigo(codigo);
+                    carrinhoDeCompras.add(produto);
+                    GerenciaCinema.removeIngressoPorCodigo(codigo); // TODO se o cliente deslogar fazer os itens do carrinho voltar para seus lugares.
+                }catch (IndexOutOfBoundsException iobe){
+                    throw new IllegalArgumentException("Não existe produtos suficientes");
+                }
+            }
+            for (int i = 0; i < quantidade; i++){
+            }
+
+
+        } else if (codigo.startsWith("L")|| codigo.startsWith("l")) {
+            for (int i = 0; i < quantidade; i++){
+                try{
+                    carrinhoDeCompras.add(GerenciaLanchonete.getProdLanchonetePorCodigo(codigo));
+                }catch (IndexOutOfBoundsException iobe){
+                    throw new IllegalArgumentException("Não existe produtos suficientes");
+                }
+            }
+        }else {
+            throw new IllegalArgumentException("Produto não encontrado");
+        }
     }
 
     public void removeProduto(Produto produto) {
@@ -50,6 +73,9 @@ public class CarrinhoCompras {
         return total;
     }
 
+    public Produto buscaPorCodigo(int codigo){
+        return null;
+    }
 
 
 }

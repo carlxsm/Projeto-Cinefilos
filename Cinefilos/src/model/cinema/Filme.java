@@ -32,6 +32,6 @@ public class Filme {
 
     @Override
     public String toString() {
-        return getNomeFilme() +" | "+ getDuracao();
+        return getNomeFilme() +" | "+ getDuracao()+" minutos";
     }
 }

@@ -1,3 +1,4 @@
+import controller.GerenciaCinema;
 import facades.SistemaFacade;
 import model.cinema.TipoSala;
 import model.sistema.Sistema;
@@ -30,6 +31,7 @@ public class Main {
         sistemaFacade.criaNovoFilme("Shrek 1",200);
         sistemaFacade.adicionarNovoFilmeCinema(2,3,1700);
 
+        sistemaFacade.teste();
         do {
             TelaCliente.imprimeMenuInicial();
             switch (Sistema.scan.nextInt()){
@@ -49,32 +51,28 @@ public class Main {
                             switch (Sistema.scan.nextInt()){
                                 case 1: // exibição
                                     sistemaFacade.exibeIngressosDisponiveis();
-                                    System.out.println("1 - Comprar | 2 - Voltar");
+                                    System.out.println("1 - Comprar | 0 - Voltar");
                                     switch (Sistema.scan.nextInt()){
                                         case 1:
                                             System.out.println("Insira o código do ingresso que deseja comprar");
+                                            String escolhaDoIngresso = sistemaFacade.entradaString();
                                             System.out.println("Insira a quantidade");
-                                            sistemaFacade.adicionaIngressoCinemaCarrinhoCompras(sistemaFacade.entradaInteiro());
-                                            // escolher o filme {nomeFilme, sala, horario}
-
-                                                // adicionaIngresso ao carrinho
-                                                // Remove Ingresso de IngressosCinema
+                                            int escolhaQuantidadeIngressos = sistemaFacade.entradaInteiro();
+                                            sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
+                                            sistemaFacade.teste();
+                                            System.out.println("Ingressos adicionados!");
+                                            sistemaFacade.verCarrinho();
                                             break;
-                                        case 2: // Voltar
+                                        case 0: // Voltar
                                             break;
-                                    }
-                                    System.out.println("Escolha do filme: ");
-                                    int escolha = sistemaFacade.entradaInteiro();
-                                    if (escolha!= 0){
-                                        sistemaFacade.adicionaIngressoCinemaCarrinhoCompras(escolha);
-                                        break;
                                     }
                                     break;
                                 case 2: // exibição e escolha produto Lanchonete
                                     sistemaFacade.verProdutoLanchonete();
-                                    int escolhaLanchonete = sistemaFacade.entradaInteiro();
-                                    if (escolhaLanchonete != 0){
-                                        sistemaFacade.adicionaProdutoLanchoneteCarrinhoCompras(escolhaLanchonete);
+                                    String escolhaLanchonete = String.valueOf(sistemaFacade.entradaInteiro());
+                                    int quantidadeCompraProdutosLanchonete = sistemaFacade.entradaInteiro();
+                                    if (!escolhaLanchonete.equals("0")){
+                                        sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaLanchonete,quantidadeCompraProdutosLanchonete);
                                         break;
                                     }
                                     break;
