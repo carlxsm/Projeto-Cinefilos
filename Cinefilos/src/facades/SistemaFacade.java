@@ -111,7 +111,7 @@ public class SistemaFacade {
 
     public void exibeProdutosLanchoneteDisponiveis(){
         for (Produto produto: GerenciaLanchonete.getProdutosDisponiveis()){
-            System.out.println(produto+ " Quantidade:"+produto.getQuantidade()); // TODO fazer um toString | Definir toString do produto lanchonete | Nome, preco, quantidade disponivel
+            System.out.println(produto+ " Quantidade:"+produto.getQuantidade());
         }
     }
 
@@ -142,7 +142,7 @@ public class SistemaFacade {
        // Lanchonete
     public void criaNovoProdutoLanchonete(String nome, double preco,int quantidade){
         //nome,preco,quantidade
-        gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete(nome,preco,quantidade,GerenciaSistema.geraCodigo()));
+        gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete(nome,preco,quantidade,("L"+GerenciaSistema.geraCodigo())));
     }
     public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE){
@@ -178,6 +178,7 @@ public class SistemaFacade {
     }
 
     //util
+    //TODO ARRUMAR ESSES MÉTODOS DE ENTRADA
     public int entradaInteiro(){
         if (Sistema.scan.hasNextInt()){
             return Sistema.scan.nextInt();
@@ -205,7 +206,7 @@ public class SistemaFacade {
 
     public void teste(){
         int total = 0;
-        for (List<ProdutoIngressoCinema> lista1: gerenciaCinema.getIngressosDoCinema()){
+        for (List<ProdutoIngressoCinema> lista1: GerenciaCinema.getIngressosDoCinema()){
             for (Produto produto: lista1){
                 total++;
             }

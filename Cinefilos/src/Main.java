@@ -76,10 +76,10 @@ public class Main {
                                     switch (Sistema.scan.nextInt()){
                                         case 1: // comprar
                                             System.out.println("Insira o código do produto que deseja comprar");
-                                            String escolhaDoProduto = sistemaFacade.entradaString();
+                                            String escolhaDoProdutoLanchonete = sistemaFacade.entradaString();
                                             System.out.println("Insira a quantidade");
-                                            int escolhaQuantidadeIngressos = sistemaFacade.entradaInteiro();
-                                            // sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
+                                            int quantidadeProdutoLanchonete = sistemaFacade.entradaInteiro();
+                                            sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete,quantidadeProdutoLanchonete);
                                             System.out.println("Produtos adicionados!");
                                             sistemaFacade.verCarrinho();
                                             break;

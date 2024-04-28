@@ -19,13 +19,21 @@ public class GerenciaLanchonete {
 
     public static ProdutoLanchonete getProdLanchonetePorCodigo(String codigo) {
         for (ProdutoLanchonete prod : produtosDisponiveis) {
-            if (prod.getCodigo().equals(codigo)) {
+            if (prod.getCodigo().equalsIgnoreCase(codigo)) {
                 return prod;
             }
         }
         throw new IllegalArgumentException("Produto não encontrado.");
     }
 
+    //FIXME Não esta atualizando a quantidade, quando adicionado no carrinho
+    public static void atualizaQuantidadeProduto(String codigo, int quantidade){
+        for (ProdutoLanchonete prod : produtosDisponiveis) {
+            if (prod.getCodigo().equalsIgnoreCase(codigo)) {
+                prod.setQuantidade(quantidade);
+            }
+        }
+    }
     public void adicionaProduto(ProdutoLanchonete produtoLanchonete){
 
         produtosDisponiveis.add(produtoLanchonete);

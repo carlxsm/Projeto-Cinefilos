@@ -51,11 +51,10 @@ public class CarrinhoCompras {
             }
 
         } else if (codigo.startsWith("L")|| codigo.startsWith("l")) {
-            for (int i = 0; i < quantidade; i++){
-                try{
-                    carrinhoDeCompras.add(GerenciaLanchonete.getProdLanchonetePorCodigo(codigo));
-                }catch (IndexOutOfBoundsException iobe){
-                    throw new IllegalArgumentException("Não existe produtos suficientes");
+            for (ProdutoLanchonete produtoLanchonete: GerenciaLanchonete.getProdutosDisponiveis()){
+                if (produtoLanchonete.getCodigo().equalsIgnoreCase(codigo)){
+                    carrinhoDeCompras.add(new ProdutoLanchonete(produtoLanchonete.getNome(),produtoLanchonete.getPreco()* produtoLanchonete.getQuantidade(),1,produtoLanchonete.getCodigo()));
+                    GerenciaLanchonete.getProdLanchonetePorCodigo(codigo).setQuantidade(GerenciaLanchonete.getProdLanchonetePorCodigo(codigo).getQuantidade() - quantidade);
                 }
             }
         }else {
