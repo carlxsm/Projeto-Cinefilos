@@ -11,8 +11,8 @@ public class Cliente extends Usuario{
     private CarrinhoCompras carrinhoCompras = new CarrinhoCompras();
     private ProgramaFidelidade programaFidelidade = new ProgramaFidelidade(0);
 
-    public Cliente(String nome, String senha, CategoriaUsuario categoriaUsuario) {
-        super(nome, senha, categoriaUsuario);
+    public Cliente(String nome, String senha) {
+        super(nome, senha, CategoriaUsuario.CLIENTE);
     }
 
 //    public List<Produto> getCarrinhoCompras() {

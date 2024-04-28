@@ -4,7 +4,8 @@ import controller.GerenciaCinema;
 import controller.GerenciaLanchonete;
 import controller.GerenciaSistema;
 import model.Produto;
-import model.cinema.Filme;
+import model.cinema.ProdutoIngressoCinema;
+import model.cinema.Sala;
 import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
 import model.sistema.usuario.CategoriaUsuario;
@@ -12,9 +13,13 @@ import model.sistema.usuario.Cliente;
 import model.sistema.usuario.Gerente;
 import model.sistema.usuario.Usuario;
 
+import java.util.List;
+
 public class SistemaFacade {
 
     GerenciaSistema gerenciaSistema = new GerenciaSistema();
+    GerenciaCinema gerenciaCinema = new GerenciaCinema();
+    GerenciaLanchonete gerenciaLanchonete = new GerenciaLanchonete();
     public static Usuario usuarioLogado = Sistema.getLOGADO(); // gerente ou usuario
 
 
@@ -42,8 +47,8 @@ public class SistemaFacade {
             System.out.println();
         }
     }
-    public void criarContaGerente(){
-        gerenciaSistema.registraNovoGerente(null,null);
+    public void criarContaGerente(String nome, String senha){
+        gerenciaSistema.registraNovoGerente(nome,senha);
     }
 
     public void fazerLogin(String nome, String senha){
@@ -67,70 +72,113 @@ public class SistemaFacade {
 
 
     // Cliente
-    public void adicionaProdutoCarrinhoCompras(Produto produto){
-        if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
-            ((Cliente) usuarioLogado).getCarrinhoCompras().adicionarProduto(produto);
+    public void adicionaProdutoCarrinhoCompras(String codProduto, int quantidade){
+        try{
+            ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().adicionarProduto(codProduto, quantidade);
+        }catch (IndexOutOfBoundsException iobe){
+            System.out.println(iobe.getMessage());
         }
-        throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
 
+    //fixme ACHO QUE PODEMOS APAGAR ESSE MÉTODO
     public void removeProdutoCarrinhoCompras(Produto produto){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
-            ((Cliente) usuarioLogado).getCarrinhoCompras().removeProduto(produto);
+            ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().removeProduto(produto);
         }
         throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
 
     public void limpaCarrinhoCompras(){
-        ((Cliente) usuarioLogado).getCarrinhoCompras().esvaziarCarrinho();
+        ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().esvaziarCarrinho();
     }
 
     public void verCarrinho(){
+        System.out.println("Carrinho de compras:");
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
-            for (Produto produto: ((Cliente) usuarioLogado).getCarrinhoCompras().getCarrinhoDeCompras()){
-                System.out.println(produto.getNome()); // TODO fazer um toString | Definir toString do Ingresso e do ProdutoLanchonete | Nome,Preco e Index
+            for (Produto produto: ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().getCarrinhoDeCompras()){
+                System.out.println(produto);
             }
-        }
-        throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
-    }
-
-    public void verFilmesDisponiveis(){
-        for (Filme filme: GerenciaCinema.getFilmesEmCartaz()){
-            System.out.println(filme.getNomeFilme()); // TODO fazer um toString | Definir toString do filme | Nome, duração
+        }else {
+            throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
         }
     }
 
-    public void verProdutoLanchonete(){
+    public void exibeIngressosDisponiveis(){
+        for (String ingresso: gerenciaCinema.getIngressosDisponiveis()){
+            System.out.println(ingresso);
+        }
+    }
+
+    public void exibeProdutosLanchoneteDisponiveis(){
         for (Produto produto: GerenciaLanchonete.getProdutosDisponiveis()){
-            System.out.println(produto.getNome()); // TODO fazer um toString | Definir toString do produto lanchonete | Nome, preco, quantidade disponivel
+            System.out.println(produto+ " Quantidade:"+produto.getQuantidade());
         }
     }
 
     public double finalizaCompra(){
-        double total = ((Cliente)usuarioLogado).getCarrinhoCompras().finalizaPedido();
-        ((Cliente)usuarioLogado).getProgramaFidelidade().adicionaPontos(total);
-        ((Cliente)usuarioLogado).getProgramaFidelidade().atualizaNivel();
+        double total = ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().finalizaPedido();
+        ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().adicionaPontos(total);
+        ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().atualizaNivel();
         return total;
+    }
+    public void cancelarCompra() {
+        ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().cancelarCompra();
+        gerenciaSistema.deslogar();
     }
 
     // Gerente
+       // Cinema
+    public void criaNovaSalaCinema(String nomeSala, String tipoSala){
+        gerenciaCinema.adicionaSalaCinema(new Sala(nomeSala,tipoSala));
+    }
+    public void criaNovoFilme(String nomeFilme, int duracaoFilme){
+        gerenciaCinema.adicionaFilmeEmCartaz(nomeFilme,duracaoFilme);
+    }
+    public void adicionarNovoFilmeCinema(int indexSala, int indexFilme, int horario){
+
+        gerenciaCinema.adicionaFilmeNaSala(gerenciaCinema.getSalaCinema(indexSala),gerenciaCinema.getFilmeNaSala(indexFilme),horario);
+    }
+    public void removerFilmeCinema(){}
+       // Lanchonete
+    public void criaNovoProdutoLanchonete(String nome, double preco,int quantidade){
+        //nome,preco,quantidade
+        gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete(nome,preco,quantidade,("L"+GerenciaSistema.geraCodigo())));
+    }
     public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE){
-            ((Gerente) usuarioLogado).getGerenciaLanchonete().adicionaProduto(produtoLanchonete);
+            ((Gerente) Sistema.getLOGADO()).getGerenciaLanchonete().adicionaProduto(produtoLanchonete);
         }
         throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
-
-    public void editarProduto(){
-
+    public ProdutoLanchonete getProdutoLanchonete(String codigo){
+        return GerenciaLanchonete.getProdLanchonetePorCodigo(codigo);
+    }
+    public void editaNomeProdutoLanchonete(String nome,String codigo){
+        ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
+        produtoEditado.setNome(nome);
+    }
+    public void editaPrecoProdutoLanchonete(double preco,String codigo){
+        ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
+        produtoEditado.setPreco(preco);
+    }
+    public void editaQuantidadeProdutoLanchonete(int quantidade,String codigo){
+        ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
+        produtoEditado.setQuantidade(quantidade);
     }
 
-    public void removerProduto(){
+
+
+    public void removerProdutoLanchonete(){
 
     }
-
+    public void gerarRelatorio(){
+        for (String venda: gerenciaSistema.relatorioVendas()){
+            System.out.println(venda);
+        }
+    }
 
     //util
+    //TODO ARRUMAR ESSES MÉTODOS DE ENTRADA
     public int entradaInteiro(){
         if (Sistema.scan.hasNextInt()){
             return Sistema.scan.nextInt();
@@ -155,4 +203,17 @@ public class SistemaFacade {
             return true;
         }return false;
     }
+
+    public void teste(){
+        int total = 0;
+        for (List<ProdutoIngressoCinema> lista1: GerenciaCinema.getIngressosDoCinema()){
+            for (Produto produto: lista1){
+                total++;
+            }
+        }
+        System.out.println(total);
+    }
+
+
+
 }

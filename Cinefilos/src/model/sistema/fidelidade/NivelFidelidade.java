@@ -22,4 +22,9 @@ public enum NivelFidelidade {
     public double getValorInicialDesconto() {
         return valorInicialDesconto;
     }
+
+    @Override
+    public String toString() {
+        return "NivelFidelidade{" +this.name()+'}';
+    }
 }
