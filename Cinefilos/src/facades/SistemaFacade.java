@@ -4,10 +4,8 @@ import controller.GerenciaCinema;
 import controller.GerenciaLanchonete;
 import controller.GerenciaSistema;
 import model.Produto;
-import model.cinema.Filme;
 import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
-import model.cinema.TipoSala;
 import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
 import model.sistema.usuario.CategoriaUsuario;
@@ -49,8 +47,8 @@ public class SistemaFacade {
             System.out.println();
         }
     }
-    public void criarContaGerente(){
-        gerenciaSistema.registraNovoGerente(null,null);
+    public void criarContaGerente(String nome, String senha){
+        gerenciaSistema.registraNovoGerente(nome,senha);
     }
 
     public void fazerLogin(String nome, String senha){
@@ -82,7 +80,7 @@ public class SistemaFacade {
         }
     }
 
-
+    //fixme ACHO QUE PODEMOS APAGAR ESSE MÉTODO
     public void removeProdutoCarrinhoCompras(Produto produto){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
             ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().removeProduto(produto);
@@ -105,20 +103,15 @@ public class SistemaFacade {
         }
     }
 
-    public void verFilmesDisponiveis(){
-        for (Filme filme: GerenciaCinema.getFilmesEmCartaz()){
-            System.out.println(filme);
-        }
-    }
     public void exibeIngressosDisponiveis(){
         for (String ingresso: gerenciaCinema.getIngressosDisponiveis()){
             System.out.println(ingresso);
         }
     }
 
-    public void verProdutoLanchonete(){
+    public void exibeProdutosLanchoneteDisponiveis(){
         for (Produto produto: GerenciaLanchonete.getProdutosDisponiveis()){
-            System.out.println(produto.getNome()); // TODO fazer um toString | Definir toString do produto lanchonete | Nome, preco, quantidade disponivel
+            System.out.println(produto); // TODO fazer um toString | Definir toString do produto lanchonete | Nome, preco, quantidade disponivel
         }
     }
 
@@ -127,6 +120,10 @@ public class SistemaFacade {
         ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().adicionaPontos(total);
         ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().atualizaNivel();
         return total;
+    }
+    public void cancelarCompra() {
+        ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().cancelarCompra();
+        gerenciaSistema.deslogar();
     }
 
     // Gerente
@@ -143,7 +140,7 @@ public class SistemaFacade {
     public void removerFilmeCinema(){}
     public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE){
-            ((Gerente) usuarioLogado).getGerenciaLanchonete().adicionaProduto(produtoLanchonete);
+            ((Gerente) Sistema.getLOGADO()).getGerenciaLanchonete().adicionaProduto(produtoLanchonete);
         }
         throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
@@ -155,7 +152,11 @@ public class SistemaFacade {
     public void removerProdutoLanchonete(){
 
     }
-
+    public void gerarRelatorio(){
+        for (String venda: gerenciaSistema.relatorioVendas()){
+            System.out.println(venda);
+        }
+    }
 
     //util
     public int entradaInteiro(){
@@ -192,4 +193,7 @@ public class SistemaFacade {
         }
         System.out.println(total);
     }
+
+
+
 }

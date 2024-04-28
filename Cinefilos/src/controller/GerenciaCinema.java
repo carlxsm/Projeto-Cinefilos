@@ -92,7 +92,7 @@ public class GerenciaCinema {
         //throw new IllegalArgumentException("Não existe ingresso com código informado.");
     }
 
-
+    // OBSERVACAO
     public static void removeIngressoPorCodigo(String cod) {
         Iterator<List<ProdutoIngressoCinema>> iterator = ingressosDoCinema.iterator();
         while (iterator.hasNext()) {

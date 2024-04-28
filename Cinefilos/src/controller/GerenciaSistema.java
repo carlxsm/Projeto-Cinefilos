@@ -6,6 +6,8 @@ import model.sistema.usuario.Cliente;
 import model.sistema.usuario.Gerente;
 import model.sistema.usuario.Usuario;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,8 +22,21 @@ public class GerenciaSistema {
     }
 
     public int adicionaCompras(CarrinhoCompras carrinhoCompras) {
-        totalCompras.add(carrinhoCompras);
+        CarrinhoCompras carrinhoComprasClone = new CarrinhoCompras(carrinhoCompras.getTipoCliente(),carrinhoCompras.getData(),
+                carrinhoCompras.getGerenciaSistema(), carrinhoCompras.getGerenciaCinema(),carrinhoCompras.getCarrinhoDeCompras() );
+        totalCompras.add(carrinhoComprasClone);
         return totalCompras.indexOf(carrinhoCompras);
+    }
+    public List<String> relatorioVendas() {
+        List<String> relatorioVendas = new ArrayList<>();
+        for (CarrinhoCompras carrinho : totalCompras) {
+            String infoData = carrinho.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String infoUsuario = carrinho.getTipoCliente().toString();
+            String infoValorCompra = String.valueOf(carrinho.valorComDesconto());
+            String infoCompra = infoData+" | " + infoUsuario + " | R$" + infoValorCompra;
+            relatorioVendas.add(infoCompra);
+        }
+        return relatorioVendas;
     }
 
     public void registrarNovoCliente(String nome, String senha){
@@ -32,7 +47,7 @@ public class GerenciaSistema {
             throw iae;
         }
         if (!sistema.verificaUsuarioExiste(nome)){
-            sistema.adicionaNovoUsuario(new Cliente(nome,senha, CategoriaUsuario.CLIENTE));
+            sistema.adicionaNovoUsuario(new Cliente(nome,senha));
         }else{
             throw new IllegalArgumentException("Usuário já existe");
         }
@@ -46,7 +61,7 @@ public class GerenciaSistema {
             throw iae;
         }
         if (!sistema.verificaUsuarioExiste(nome)){
-            sistema.adicionaNovoUsuario(new Gerente(nome,senha, CategoriaUsuario.GERENTE));
+            sistema.adicionaNovoUsuario(new Gerente(nome,senha));
         }else{
             throw new IllegalArgumentException("Usuário já existe");
         };

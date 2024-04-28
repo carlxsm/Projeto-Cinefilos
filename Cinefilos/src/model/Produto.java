@@ -6,6 +6,7 @@ public abstract class Produto {
     int quantidade;
     String codigo;
 
+
     public Produto(String nome, double preco, int quantidade, String codigo) {
         this.nome = nome;
         this.preco = preco;

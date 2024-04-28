@@ -12,6 +12,9 @@ public class Main {
         SistemaFacade sistemaFacade = new SistemaFacade();
         sistemaFacade.abreCinema();
 
+        sistemaFacade.criarContaGerente("admin","admin");
+        sistemaFacade.criarContaCliente("user","user");
+
         sistemaFacade.criaNovaSalaCinema("Sala Normal 01", "BASICA");
         sistemaFacade.criaNovaSalaCinema("Sala 3D 01", "VIP");
         sistemaFacade.criaNovaSalaCinema("Sala Vip 01", "SALA3D");
@@ -32,6 +35,7 @@ public class Main {
         sistemaFacade.adicionarNovoFilmeCinema(2,3,1700);
 
         sistemaFacade.teste();
+
         do {
             TelaCliente.imprimeMenuInicial();
             switch (Sistema.scan.nextInt()){
@@ -46,14 +50,13 @@ public class Main {
                     if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.CLIENTE){
                         while (Sistema.getLOGADO() != null){
                             TelaCliente.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
-                            //TODO view
                             System.out.println("1 - Filmes | 2 - Lanchonete | 3 - Fechar pedido | 4 - Deslogar"); // TODO fazer com que só exiba a op. 3 se o carrinho !empty()
                             switch (Sistema.scan.nextInt()){
                                 case 1: // exibição
                                     sistemaFacade.exibeIngressosDisponiveis();
                                     System.out.println("1 - Comprar | 0 - Voltar");
                                     switch (Sistema.scan.nextInt()){
-                                        case 1:
+                                        case 1: // comprar
                                             System.out.println("Insira o código do ingresso que deseja comprar");
                                             String escolhaDoIngresso = sistemaFacade.entradaString();
                                             System.out.println("Insira a quantidade");
@@ -63,44 +66,55 @@ public class Main {
                                             System.out.println("Ingressos adicionados!");
                                             sistemaFacade.verCarrinho();
                                             break;
-                                        case 0: // Voltar
+                                        case 0: // voltar
                                             break;
                                     }
                                     break;
-                                case 2: // exibição e escolha produto Lanchonete
-                                    sistemaFacade.verProdutoLanchonete();
-                                    String escolhaLanchonete = String.valueOf(sistemaFacade.entradaInteiro());
-                                    int quantidadeCompraProdutosLanchonete = sistemaFacade.entradaInteiro();
-                                    if (!escolhaLanchonete.equals("0")){
-                                        sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaLanchonete,quantidadeCompraProdutosLanchonete);
-                                        break;
+                                case 2: // exibição lanchonete
+                                    sistemaFacade.exibeProdutosLanchoneteDisponiveis();
+                                    System.out.println("1 - Comprar | 0 - Voltar");
+                                    switch (Sistema.scan.nextInt()){
+                                        case 1: // comprar
+                                            System.out.println("Insira o código do produto que deseja comprar");
+                                            String escolhaDoProduto = sistemaFacade.entradaString();
+                                            System.out.println("Insira a quantidade");
+                                            int escolhaQuantidadeIngressos = sistemaFacade.entradaInteiro();
+                                            // sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
+                                            System.out.println("Produtos adicionados!");
+                                            sistemaFacade.verCarrinho();
+                                            break;
+                                        case 0: // voltar
+                                            break;
                                     }
                                     break;
                                 case 3: // fechar pedido
-                                    sistemaFacade.verCarrinho();
                                     try{
-                                        System.out.println(sistemaFacade.finalizaCompra()); //TODO tentar mandar isso para um método da view
+                                        System.out.println("Compra concluida");
+                                        System.out.println("Total: R$"+sistemaFacade.finalizaCompra()); //TODO tentar mandar isso para um método da view
                                     }catch (IllegalArgumentException iae){
                                         System.out.println(iae.getMessage());
                                     }
                                     break;
                                 case 4: // cancela compra e sair do sistema
-                                    sistemaFacade.limpaCarrinhoCompras();
-                                    sistemaFacade.deslogar();
+                                    sistemaFacade.cancelarCompra();
                                     break;
                             }
                         }
-                    } else if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.GERENTE) {
+                    }
+                    // Menu gerente
+                    else if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.GERENTE) {
                         while (Sistema.getLOGADO() != null){
-
+                            System.out.println("1 - Atualizar exibições | 2 - Atualiza Lanchonete | 3 - Relatório | 4 - Sair");
                             switch (Sistema.scan.nextInt()){
-                                case 1:
+                                case 1: // Atualizar exibicoes
                                     break;
-                                case 2:
+                                case 2: // Atualizar lanchonete
                                     break;
-                                case 3:
+                                case 3: // gerar relatorio de compras
+                                    sistemaFacade.gerarRelatorio();
                                     break;
-                                case 4:
+                                case 4: // sair do sistema
+                                    sistemaFacade.deslogar();
                                     break;
                             }
                         }
@@ -119,7 +133,7 @@ public class Main {
                     break;
 
                 case 3:
-                    sistemaFacade.fechaCinema();
+                    sistemaFacade.fechaCinema(); //TODO Arquivos
                     break;
             }
 
