@@ -7,11 +7,11 @@ import java.util.ArrayList;
 public class Filme {
 
     private String nomeFilme;
-    private int horarioFilme;
     private int duracao;
 
-    public Filme(String nomeFilme) {
+    public Filme(String nomeFilme,int duracao) {
         this.nomeFilme = nomeFilme;
+        this.duracao = duracao;
     }
 
     public String getNomeFilme() {
@@ -22,6 +22,16 @@ public class Filme {
         this.nomeFilme = nomeFilme;
     }
 
+    public int getDuracao() {
+        return duracao;
+    }
 
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
+    }
 
+    @Override
+    public String toString() {
+        return getNomeFilme() +" | "+ getDuracao();
+    }
 }

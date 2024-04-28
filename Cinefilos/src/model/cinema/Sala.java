@@ -1,25 +1,20 @@
 package model.cinema;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Sala {
-    private final int  QUANTIDADE_POLTRONAS;
-    private ArrayList<Filme> programacaoFilmes = new ArrayList<>();
+
+    private List<Filme> programacaoFilmes = new ArrayList<>(); // TODO esse atributo so está servindo para verificar se o filme já está cadastrado na sala, mas ele não ta legal não, ta bem zoado.
     private String nomeSala;
     private TipoSala tipoSala;
 
-    public Sala(int QUANTIDADE_POLTRONAS, ArrayList<Filme> programacaoFilmes, String nomeSala, TipoSala tipoSala) {
-        this.QUANTIDADE_POLTRONAS = QUANTIDADE_POLTRONAS;
-        this.programacaoFilmes = programacaoFilmes;
+    public Sala( String nomeSala, String tipoSala) {
         this.nomeSala = nomeSala;
-        this.tipoSala = tipoSala;
+        this.tipoSala = TipoSala.valueOf(tipoSala);
     }
 
-    public int getQUANTIDADE_POLTRONAS() {
-        return QUANTIDADE_POLTRONAS;
-    }
-
-    public ArrayList<Filme> getProgramacaoFilmes() {
+    public List<Filme> getProgramacaoFilmes() {
         return programacaoFilmes;
     }
 
@@ -34,12 +29,13 @@ public class Sala {
     public TipoSala getTipoSala() {
         return tipoSala;
     }
-    public void setTipoSala(TipoSala tipoSala) {
-        this.tipoSala = tipoSala;
-    }
+
     public int adicionarFilme( Filme filme){
-        programacaoFilmes.add(filme);
-        return programacaoFilmes.indexOf(filme);
+        if (!programacaoFilmes.contains(filme)){
+            programacaoFilmes.add(filme);
+            return programacaoFilmes.indexOf(filme);
+        }
+        return -1;
     }
     public void removeFilme(Filme filme){
         programacaoFilmes.remove(filme);
