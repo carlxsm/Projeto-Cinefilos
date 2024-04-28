@@ -18,8 +18,12 @@ public class GerenciaLanchonete {
     }
 
     public static ProdutoLanchonete getProdLanchonetePorCodigo(String codigo) {
-        //TODO implementar esse método como no GerenciaCinema
-        return null;
+        for (ProdutoLanchonete prod : produtosDisponiveis) {
+            if (prod.getCodigo().equals(codigo)) {
+                return prod;
+            }
+        }
+        throw new IllegalArgumentException("Produto não encontrado.");
     }
 
     public void adicionaProduto(ProdutoLanchonete produtoLanchonete){

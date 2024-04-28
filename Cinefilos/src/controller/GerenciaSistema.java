@@ -15,7 +15,7 @@ import java.util.Random;
 public class GerenciaSistema {
 
     final Sistema sistema = new Sistema();
-    final List<CarrinhoCompras> totalCompras = new ArrayList<>();
+    final static List<CarrinhoCompras> totalCompras = new ArrayList<>();
 
     public List<CarrinhoCompras> getTotalCompras() {
         return totalCompras;
@@ -25,11 +25,12 @@ public class GerenciaSistema {
         CarrinhoCompras carrinhoComprasClone = new CarrinhoCompras(carrinhoCompras.getTipoCliente(),carrinhoCompras.getData(),
                 carrinhoCompras.getGerenciaSistema(), carrinhoCompras.getGerenciaCinema(),carrinhoCompras.getCarrinhoDeCompras() );
         totalCompras.add(carrinhoComprasClone);
-        return totalCompras.indexOf(carrinhoCompras);
+        return totalCompras.indexOf(carrinhoComprasClone);
     }
     public List<String> relatorioVendas() {
         List<String> relatorioVendas = new ArrayList<>();
         for (CarrinhoCompras carrinho : totalCompras) {
+            System.out.println(carrinho);
             String infoData = carrinho.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             String infoUsuario = carrinho.getTipoCliente().toString();
             String infoValorCompra = String.valueOf(carrinho.valorComDesconto());

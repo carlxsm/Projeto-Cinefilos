@@ -8,8 +8,10 @@ public class ProdutoLanchonete extends Produto {
         super(nome, preco, quantidade, codigo);
     }
 
+
     @Override
     public String toString() {
         return super.getNome()+" | "+super.getPreco()+" | "+super.getCodigo();
     }
+
 }

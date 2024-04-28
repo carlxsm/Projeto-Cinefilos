@@ -141,4 +141,15 @@ public class CarrinhoCompras {
     public GerenciaCinema getGerenciaCinema() {
         return gerenciaCinema;
     }
+
+    @Override
+    public String toString() {
+        return "CarrinhoCompras{" +
+                "tipoCliente=" + tipoCliente +
+                ", data=" + data +
+                ", gerenciaSistema=" + gerenciaSistema +
+                ", gerenciaCinema=" + gerenciaCinema +
+                ", carrinhoDeCompras=" + carrinhoDeCompras +
+                " "+carrinhoDeCompras.size()+'}';
+    }
 }

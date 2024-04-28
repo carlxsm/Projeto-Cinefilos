@@ -111,7 +111,7 @@ public class SistemaFacade {
 
     public void exibeProdutosLanchoneteDisponiveis(){
         for (Produto produto: GerenciaLanchonete.getProdutosDisponiveis()){
-            System.out.println(produto); // TODO fazer um toString | Definir toString do produto lanchonete | Nome, preco, quantidade disponivel
+            System.out.println(produto+ " Quantidade:"+produto.getQuantidade()); // TODO fazer um toString | Definir toString do produto lanchonete | Nome, preco, quantidade disponivel
         }
     }
 
@@ -127,6 +127,7 @@ public class SistemaFacade {
     }
 
     // Gerente
+       // Cinema
     public void criaNovaSalaCinema(String nomeSala, String tipoSala){
         gerenciaCinema.adicionaSalaCinema(new Sala(nomeSala,tipoSala));
     }
@@ -138,16 +139,34 @@ public class SistemaFacade {
         gerenciaCinema.adicionaFilmeNaSala(gerenciaCinema.getSalaCinema(indexSala),gerenciaCinema.getFilmeNaSala(indexFilme),horario);
     }
     public void removerFilmeCinema(){}
+       // Lanchonete
+    public void criaNovoProdutoLanchonete(String nome, double preco,int quantidade){
+        //nome,preco,quantidade
+        gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete(nome,preco,quantidade,GerenciaSistema.geraCodigo()));
+    }
     public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE){
             ((Gerente) Sistema.getLOGADO()).getGerenciaLanchonete().adicionaProduto(produtoLanchonete);
         }
         throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
-
-    public void editarProdutoLanchonete(){
-
+    public ProdutoLanchonete getProdutoLanchonete(String codigo){
+        return GerenciaLanchonete.getProdLanchonetePorCodigo(codigo);
     }
+    public void editaNomeProdutoLanchonete(String nome,String codigo){
+        ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
+        produtoEditado.setNome(nome);
+    }
+    public void editaPrecoProdutoLanchonete(double preco,String codigo){
+        ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
+        produtoEditado.setPreco(preco);
+    }
+    public void editaQuantidadeProdutoLanchonete(int quantidade,String codigo){
+        ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
+        produtoEditado.setQuantidade(quantidade);
+    }
+
+
 
     public void removerProdutoLanchonete(){
 

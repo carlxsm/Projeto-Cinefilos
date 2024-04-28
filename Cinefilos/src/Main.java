@@ -109,6 +109,52 @@ public class Main {
                                 case 1: // Atualizar exibicoes
                                     break;
                                 case 2: // Atualizar lanchonete
+                                    sistemaFacade.exibeProdutosLanchoneteDisponiveis();
+                                    System.out.println("1 - Adiciona novo produto | 2 - Edita produto | 3 - Remove produto | 4- Sair");
+                                    switch (sistemaFacade.entradaInteiro()){
+                                        case 1: // adiciona
+                                            System.out.println("Nome do novo produto:");
+                                            String nomeNovoProduto = sistemaFacade.entradaString();
+                                            System.out.println("Preço do novo produto:");
+                                            String precoNovoProduto = Sistema.scan.next();
+                                            System.out.println("Quantidade do novo produto:");
+                                            int quantidadeNovoProduto = sistemaFacade.entradaInteiro();
+                                            sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),quantidadeNovoProduto);
+                                            System.out.println("Produtos adicionados!");
+                                            break;
+                                        case 2: // edita
+                                            System.out.println("Codigo do produto:");
+                                            String codigoProdutoEditado = sistemaFacade.entradaString();
+                                            System.out.println(sistemaFacade.getProdutoLanchonete(codigoProdutoEditado));
+                                            System.out.println("1 - Editar nome do produto | 2 - Edita preço do produto | 3 - Editar quantidade do produto | 4- Sair");
+                                                switch (Sistema.scan.nextInt()){
+                                                    case 1: // editar nome
+                                                        System.out.println("Digite o novo nome do produto");
+                                                        String nomeProdutoEditadoNome = sistemaFacade.entradaString();
+                                                        sistemaFacade.editaNomeProdutoLanchonete(nomeProdutoEditadoNome,codigoProdutoEditado);
+                                                        System.out.println("Produto editado!");
+                                                        break;
+                                                    case 2: // Edita preco
+                                                        System.out.println("Digite o novo nome do produto");
+                                                        double precoProdutoEditado = Double.parseDouble(sistemaFacade.entradaString());
+                                                        sistemaFacade.editaPrecoProdutoLanchonete(precoProdutoEditado,codigoProdutoEditado);
+                                                        System.out.println("Produto editado!");
+                                                        break;
+                                                    case 3:
+                                                        System.out.println("Digite a quantidade do produto");
+                                                        int quantidadeProdutoEditado = sistemaFacade.entradaInteiro();
+                                                        sistemaFacade.editaQuantidadeProdutoLanchonete(quantidadeProdutoEditado,codigoProdutoEditado);
+                                                        System.out.println("Produto editado!");
+                                                        break;
+                                                    case 4:
+                                                        break;
+                                                }
+                                            break;
+                                        case 3: // remove
+                                            break;
+                                        case 4: // voltar
+                                            break;
+                                    }
                                     break;
                                 case 3: // gerar relatorio de compras
                                     sistemaFacade.gerarRelatorio();
