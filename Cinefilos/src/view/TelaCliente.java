@@ -10,13 +10,19 @@ public class TelaCliente {
     }
 
     public static void imprimeMenuInicial(){
-        System.out.println("Login - 1");
-        System.out.println("Criar conta - 2");
-        System.out.println("Sair - 3");
+        System.out.println("Escolha uma das opções");
+        System.out.println("+====================+");
+        System.out.println("| [1] - Login        |");
+        System.out.println("| [2] - Criar conta  |");
+        System.out.println("| [3] - Sair         |");
+        System.out.println("+====================+");
     }
     public static void imprimeOpcoesCompraCliente(){
-        System.out.println("Ingressos - 0");
-        System.out.println("Lanchonete - 1");
+        System.out.println("Escolha uma das opções");
+        System.out.println("+====================+");
+        System.out.println("| [0] - Ingressos    |");
+        System.out.println("| [1] - Lanchonete   |");
+        System.out.println("+====================+");
     }
 
     public void imprimeValoresPedido(Cliente cliente){
@@ -24,8 +30,11 @@ public class TelaCliente {
     }
 
     public static void imprimeOpcoesFinalizarCompra(){
-        System.out.println("Finalizar - 2");
-        System.out.println("Limpar - 3");
+        System.out.println("Escolha uma das opções");
+        System.out.println("+====================+");
+        System.out.println("| [2] - Finalizar    |");
+        System.out.println("| [3] - Limpar       |");
+        System.out.println("+====================+");
     }
 
 }

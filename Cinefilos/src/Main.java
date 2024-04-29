@@ -38,7 +38,8 @@ public class Main {
 
         do {
             TelaCliente.imprimeMenuInicial();
-            switch (Sistema.scan.nextInt()){
+            int opcaoMenu = Sistema.scan.nextInt();
+            switch (opcaoMenu){
                 case 1: // Login
                     // TODO acho que da pra colocar isso em algum controller e chamar 1 vez só pelo facade
                     System.out.println("Nome do usuario: ");
@@ -51,11 +52,13 @@ public class Main {
                         while (Sistema.getLOGADO() != null){
                             TelaCliente.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
                             System.out.println("1 - Filmes | 2 - Lanchonete | 3 - Fechar pedido | 4 - Deslogar"); // TODO fazer com que só exiba a op. 3 se o carrinho !empty()
-                            switch (Sistema.scan.nextInt()){
+                            int opcaoIngresso = Sistema.scan.nextInt();
+                            switch (opcaoIngresso){
                                 case 1: // exibição
                                     sistemaFacade.exibeIngressosDisponiveis();
                                     System.out.println("1 - Comprar | 0 - Voltar");
-                                    switch (Sistema.scan.nextInt()){
+                                    int opcaoingreco = Sistema.scan.nextInt();
+                                    switch (opcaoingreco){
                                         case 1: // comprar
                                             System.out.println("Insira o código do ingresso que deseja comprar");
                                             String escolhaDoIngresso = sistemaFacade.entradaString();
@@ -73,7 +76,8 @@ public class Main {
                                 case 2: // exibição lanchonete
                                     sistemaFacade.exibeProdutosLanchoneteDisponiveis();
                                     System.out.println("1 - Comprar | 0 - Voltar");
-                                    switch (Sistema.scan.nextInt()){
+                                    int opcaoLanchonete = Sistema.scan.nextInt();
+                                    switch (opcaoLanchonete){
                                         case 1: // comprar
                                             System.out.println("Insira o código do produto que deseja comprar");
                                             String escolhaDoProdutoLanchonete = sistemaFacade.entradaString();

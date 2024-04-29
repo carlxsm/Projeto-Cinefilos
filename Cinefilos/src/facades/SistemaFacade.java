@@ -180,10 +180,12 @@ public class SistemaFacade {
     //util
     //TODO ARRUMAR ESSES MÉTODOS DE ENTRADA
     public int entradaInteiro(){
-        if (Sistema.scan.hasNextInt()){
-            return Sistema.scan.nextInt();
+        try {
+            int entrada = Sistema.scan.nextInt();
+            return entrada;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Entrada inválida, tente novamente");
         }
-        System.out.println("Digite um número inteiro");
         return entradaInteiro();
     }
 
@@ -192,7 +194,7 @@ public class SistemaFacade {
         try {
             gerenciaSistema.validaNomeSenha(entrada);
             return entrada;
-        }catch (IllegalArgumentException iae){
+        }catch (IllegalArgumentException e){
             System.out.println("Entrada inválida, tente novamente");
         }
         return entradaString();
