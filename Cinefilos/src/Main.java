@@ -1,14 +1,17 @@
-import controller.GerenciaCinema;
 import facades.SistemaFacade;
-import model.cinema.TipoSala;
 import model.sistema.Sistema;
 import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
 import view.TelaCliente;
-public class Main {
 
+import java.util.Scanner;
+
+public class Main {
+    public static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
 
+        //TODO resolver login errado, usuario nao existe;
+        // TODO resolver criação de usuarios com nome existente;
         SistemaFacade sistemaFacade = new SistemaFacade();
         sistemaFacade.abreCinema();
 
@@ -38,34 +41,30 @@ public class Main {
 
         do {
             TelaCliente.imprimeMenuInicial();
-            int opcaoMenu = Sistema.scan.nextInt();
-            switch (opcaoMenu){
+            switch (entradaInteiro()){
                 case 1: // Login
                     // TODO acho que da pra colocar isso em algum controller e chamar 1 vez só pelo facade
                     System.out.println("Nome do usuario: ");
-                    String nomeLogin = sistemaFacade.entradaString();
+                    String nomeLogin = entradaString();
                     System.out.println("Senha do usuario: ");
-                    String senhaLogin = sistemaFacade.entradaString();
+                    String senhaLogin = entradaString();
                     sistemaFacade.fazerLogin(nomeLogin,senhaLogin);
                     // Menu Cliente
                     if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.CLIENTE){
                         while (Sistema.getLOGADO() != null){
                             TelaCliente.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
                             System.out.println("1 - Filmes | 2 - Lanchonete | 3 - Fechar pedido | 4 - Deslogar"); // TODO fazer com que só exiba a op. 3 se o carrinho !empty()
-                            int opcaoIngresso = Sistema.scan.nextInt();
-                            switch (opcaoIngresso){
+                            switch (entradaInteiro()){ //TODO fazer os default
                                 case 1: // exibição
                                     sistemaFacade.exibeIngressosDisponiveis();
                                     System.out.println("1 - Comprar | 0 - Voltar");
-                                    int opcaoingreco = Sistema.scan.nextInt();
-                                    switch (opcaoingreco){
+                                    switch (entradaInteiro()){
                                         case 1: // comprar
                                             System.out.println("Insira o código do ingresso que deseja comprar");
-                                            String escolhaDoIngresso = sistemaFacade.entradaString();
+                                            String escolhaDoIngresso = entradaString();
                                             System.out.println("Insira a quantidade");
-                                            int escolhaQuantidadeIngressos = sistemaFacade.entradaInteiro();
+                                            int escolhaQuantidadeIngressos = entradaInteiro();
                                             sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
-                                            sistemaFacade.teste();
                                             System.out.println("Ingressos adicionados!");
                                             sistemaFacade.verCarrinho();
                                             break;
@@ -76,13 +75,12 @@ public class Main {
                                 case 2: // exibição lanchonete
                                     sistemaFacade.exibeProdutosLanchoneteDisponiveis();
                                     System.out.println("1 - Comprar | 0 - Voltar");
-                                    int opcaoLanchonete = Sistema.scan.nextInt();
-                                    switch (opcaoLanchonete){
+                                    switch (entradaInteiro()){
                                         case 1: // comprar
                                             System.out.println("Insira o código do produto que deseja comprar");
-                                            String escolhaDoProdutoLanchonete = sistemaFacade.entradaString();
+                                            String escolhaDoProdutoLanchonete = entradaString();
                                             System.out.println("Insira a quantidade");
-                                            int quantidadeProdutoLanchonete = sistemaFacade.entradaInteiro();
+                                            int quantidadeProdutoLanchonete = entradaInteiro();
                                             sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete,quantidadeProdutoLanchonete);
                                             System.out.println("Produtos adicionados!");
                                             sistemaFacade.verCarrinho();
@@ -109,48 +107,48 @@ public class Main {
                     else if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.GERENTE) {
                         while (Sistema.getLOGADO() != null){
                             System.out.println("1 - Atualizar exibições | 2 - Atualiza Lanchonete | 3 - Relatório | 4 - Sair");
-                            switch (Sistema.scan.nextInt()){
+                            switch (entradaInteiro()){
                                 case 1: // Atualizar exibicoes
                                     break;
                                 case 2: // Atualizar lanchonete
                                     sistemaFacade.exibeProdutosLanchoneteDisponiveis();
                                     System.out.println("1 - Adiciona novo produto | 2 - Edita produto | 3 - Remove produto | 4- Sair");
-                                    switch (sistemaFacade.entradaInteiro()){
+                                    switch (entradaInteiro()){
                                         case 1: // adiciona
                                             System.out.println("Nome do novo produto:");
-                                            String nomeNovoProduto = sistemaFacade.entradaString();
+                                            String nomeNovoProduto = entradaString();
                                             System.out.println("Preço do novo produto:");
-                                            String precoNovoProduto = Sistema.scan.next();
+                                            String precoNovoProduto = entradaString();
                                             System.out.println("Quantidade do novo produto:");
-                                            int quantidadeNovoProduto = sistemaFacade.entradaInteiro();
+                                            int quantidadeNovoProduto = entradaInteiro();
                                             sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),quantidadeNovoProduto);
                                             System.out.println("Produtos adicionados!");
                                             break;
                                         case 2: // edita
                                             System.out.println("Codigo do produto:");
-                                            String codigoProdutoEditado = sistemaFacade.entradaString();
+                                            String codigoProdutoEditado = entradaString();
                                             System.out.println(sistemaFacade.getProdutoLanchonete(codigoProdutoEditado));
                                             System.out.println("1 - Editar nome do produto | 2 - Edita preço do produto | 3 - Editar quantidade do produto | 4- Sair");
-                                                switch (Sistema.scan.nextInt()){
+                                                switch (entradaInteiro()){
                                                     case 1: // editar nome
                                                         System.out.println("Digite o novo nome do produto");
-                                                        String nomeProdutoEditadoNome = sistemaFacade.entradaString();
+                                                        String nomeProdutoEditadoNome = entradaString();
                                                         sistemaFacade.editaNomeProdutoLanchonete(nomeProdutoEditadoNome,codigoProdutoEditado);
                                                         System.out.println("Produto editado!");
                                                         break;
                                                     case 2: // Edita preco
                                                         System.out.println("Digite o novo nome do produto");
-                                                        double precoProdutoEditado = Double.parseDouble(sistemaFacade.entradaString());
+                                                        double precoProdutoEditado = Double.parseDouble(entradaString());
                                                         sistemaFacade.editaPrecoProdutoLanchonete(precoProdutoEditado,codigoProdutoEditado);
                                                         System.out.println("Produto editado!");
                                                         break;
-                                                    case 3:
+                                                    case 3: // edita quantidade
                                                         System.out.println("Digite a quantidade do produto");
-                                                        int quantidadeProdutoEditado = sistemaFacade.entradaInteiro();
+                                                        int quantidadeProdutoEditado = entradaInteiro();
                                                         sistemaFacade.editaQuantidadeProdutoLanchonete(quantidadeProdutoEditado,codigoProdutoEditado);
                                                         System.out.println("Produto editado!");
                                                         break;
-                                                    case 4:
+                                                    case 4: // sair
                                                         break;
                                                 }
                                             break;
@@ -173,9 +171,9 @@ public class Main {
                 // TODO acho que da pra colocar isso em algum controller e chamar 1 vez só pelo facade
                 case 2: // Criar conta
                     System.out.println("Nome do usuario: ");
-                    String nomeCriarUsuario = sistemaFacade.entradaString();
+                    String nomeCriarUsuario = entradaString();
                     System.out.println("Senha do usuario: ");
-                    String senhaCriarUsuario = sistemaFacade.entradaString();
+                    String senhaCriarUsuario = entradaString();
                     sistemaFacade.criarContaCliente(nomeCriarUsuario,senhaCriarUsuario);
                     if (sistemaFacade.isLogado()){
                         System.out.println("Usuário criado com sucesso!");
@@ -189,5 +187,23 @@ public class Main {
 
         }while (Sistema.statusSistema);
 
+    }
+    public static int  entradaInteiro(){
+        if(scan.hasNextInt()){
+            return scan.nextInt();
+        }scan.nextLine();
+        System.out.println("Entrada invalida!");
+        return entradaInteiro();
+    }
+
+    public static String entradaString(){
+        String entrada = scan.next();
+        try {
+            scan.nextLine();
+            return entrada;
+        }catch (IllegalArgumentException e){
+            System.out.println("Entrada inválida, tente novamente");
+        }
+        return entradaString();
     }
 }

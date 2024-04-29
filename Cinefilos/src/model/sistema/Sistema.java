@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class Sistema {
 
-    public static Scanner scan = new Scanner(System.in);
     public static Usuario LOGADO = null;
     public static boolean statusSistema = true;
 

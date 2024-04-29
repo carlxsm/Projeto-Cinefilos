@@ -179,26 +179,9 @@ public class SistemaFacade {
 
     //util
     //TODO ARRUMAR ESSES MÉTODOS DE ENTRADA
-    public int entradaInteiro(){
-        try {
-            int entrada = Sistema.scan.nextInt();
-            return entrada;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Entrada inválida, tente novamente");
-        }
-        return entradaInteiro();
-    }
 
-    public String entradaString(){
-        String entrada = Sistema.scan.next();
-        try {
-            gerenciaSistema.validaNomeSenha(entrada);
-            return entrada;
-        }catch (IllegalArgumentException e){
-            System.out.println("Entrada inválida, tente novamente");
-        }
-        return entradaString();
-    }
+
+
 
     public boolean isLogado(){
         if (Sistema.getLOGADO()!=null){
