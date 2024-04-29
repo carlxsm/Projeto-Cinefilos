@@ -12,6 +12,9 @@ public class Main {
 
         //TODO resolver login errado, usuario nao existe;
         // TODO resolver criação de usuarios com nome existente;
+        // TODO remover os prints do facade
+        // TODO tratar error na main
+        // TODO criar classe menu
         SistemaFacade sistemaFacade = new SistemaFacade();
         sistemaFacade.abreCinema();
 
