@@ -142,6 +142,7 @@ public class SistemaFacade {
        // Lanchonete
     public void criaNovoProdutoLanchonete(String nome, double preco,int quantidade){
         //nome,preco,quantidade
+
         gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete(nome,preco,quantidade,("L"+GerenciaSistema.geraCodigo())));
     }
     public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete){
@@ -154,7 +155,7 @@ public class SistemaFacade {
         return GerenciaLanchonete.getProdLanchonetePorCodigo(codigo);
     }
     public void editaNomeProdutoLanchonete(String nome,String codigo){
-        if (nome.isEmpty() || nome.isBlank()){
+        if (nome.isEmpty() || nome.isBlank() || nome.length() < 4){
             throw new IllegalArgumentException("Insira um nome válido!");
         }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);

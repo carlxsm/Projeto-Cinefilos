@@ -143,6 +143,21 @@ public class Main {
                             System.out.println("1 - Atualizar exibições | 2 - Atualiza Lanchonete | 3 - Relatório | 4 - Sair");
                             switch (entradaInteiro()){
                                 case 1: // Atualizar exibicoes
+                                    sistemaFacade.exibeIngressosDisponiveis();
+                                    System.out.println("1 - Editar filme | 2 - Editar ingresso | 3 - Editar sala | 4 - Sair");
+                                    switch (entradaInteiro()){
+                                        case 1:
+
+                                            break;
+                                        case 2:
+                                            break;
+                                        case 3:
+                                            break;
+                                        case 4:
+                                            break;
+                                        default:
+                                            System.err.println("Opção inválida!");
+                                    }
                                     break;
                                 case 2: // Atualizar lanchonete
                                     sistemaFacade.exibeProdutosLanchoneteDisponiveis();
@@ -155,8 +170,12 @@ public class Main {
                                             String precoNovoProduto = entradaString();
                                             System.out.println("Quantidade do novo produto:");
                                             int quantidadeNovoProduto = entradaInteiro();
-                                            sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),quantidadeNovoProduto);
-                                            System.out.println("Produtos adicionados!");
+                                            try{
+                                                sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),quantidadeNovoProduto);
+                                                System.out.println("Produtos adicionados!");
+                                            }catch (IllegalArgumentException iae){
+                                                System.out.println(iae.getMessage());
+                                            }
                                             break;
                                         case 2: // edita
                                             System.out.println("Codigo do produto:");
