@@ -43,6 +43,24 @@ public class Menu {
         System.out.println("| [2] - Limpar       |");
         System.out.println("+====================+");
     }
+    public static void imprimeMenuAtualizalanchonete(){
+        System.out.println("       Escolha uma das opções       ");
+        System.out.println("+==================================+");
+        System.out.println("| [1] - Adiciona novo produto      |");
+        System.out.println("| [2] - Edita produto              |");
+        System.out.println("| [3] - Remove produto             |");
+        System.out.println("| [4] - Sair                       |");
+        System.out.println("+==================================+");
+    }
+    public static void imprimeMenuEditarLanchonete(){
+        System.out.println("        Escolha uma das opções       ");
+        System.out.println("+====================================+");
+        System.out.println("| [1] - Editar nome do produto       |");
+        System.out.println("| [2] - Edita preço do produto       |");
+        System.out.println("| [3] - Editar quantidade do produto |");
+        System.out.println("| [4] - Sair                         |");
+        System.out.println("+====================================+");
+    }
 
 
 

@@ -129,57 +129,25 @@ public class Main {
                                     break;
                                 case 2: // Atualizar lanchonete
                                     sistemaFacade.exibeProdutosLanchoneteDisponiveis();
-                                    System.out.println("1 - Adiciona novo produto | 2 - Edita produto | 3 - Remove produto | 4- Sair");
+                                    Menu.imprimeMenuAtualizalanchonete();
                                     switch (entradaInteiro()){
                                         case 1: // adiciona
-                                            System.out.println("Nome do novo produto:");
-                                            String nomeNovoProduto = entradaString();
-                                            System.out.println("Preço do novo produto:");
-                                            String precoNovoProduto = entradaString();
-                                            System.out.println("Quantidade do novo produto:");
-                                            int quantidadeNovoProduto = entradaInteiro();
-                                            try{
-                                                sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),quantidadeNovoProduto);
-                                                System.out.println("Produtos adicionados!");
-                                            }catch (IllegalArgumentException iae){
-                                                System.out.println(iae.getMessage());
-                                            }
+                                            adicionarProdutoLanchonete(sistemaFacade);
                                             break;
                                         case 2: // edita
                                             System.out.println("Codigo do produto:");
                                             String codigoProdutoEditado = entradaString();
                                             System.out.println(sistemaFacade.getProdutoLanchonete(codigoProdutoEditado));
-                                            System.out.println("1 - Editar nome do produto | 2 - Edita preço do produto | 3 - Editar quantidade do produto | 4- Sair");
+                                            Menu.imprimeMenuEditarLanchonete();
                                                 switch (entradaInteiro()){
                                                     case 1: // editar nome
-                                                        System.out.println("Digite o novo nome do produto");
-                                                        String nomeProdutoEditadoNome = entradaString();
-                                                        try {
-                                                            sistemaFacade.editaNomeProdutoLanchonete(nomeProdutoEditadoNome,codigoProdutoEditado);
-                                                            System.out.println("Produto editado!");
-                                                        }catch (IllegalArgumentException iae){
-                                                            System.out.println(iae.getMessage());
-                                                        }
+                                                        editarNomeProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
                                                         break;
                                                     case 2: // Edita preco
-                                                        System.out.println("Digite o novo nome do produto");
-                                                        double precoProdutoEditado = Double.parseDouble(entradaString());
-                                                        try{
-                                                            sistemaFacade.editaPrecoProdutoLanchonete(precoProdutoEditado,codigoProdutoEditado);
-                                                            System.out.println("Produto editado!");
-                                                        }catch (IllegalArgumentException iae){
-                                                            System.out.println(iae.getMessage());
-                                                        }
+                                                        editarPrecoProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
                                                         break;
                                                     case 3: // edita quantidade
-                                                        System.out.println("Digite a quantidade do produto");
-                                                        int quantidadeProdutoEditado = entradaInteiro();
-                                                        try {
-                                                            sistemaFacade.editaQuantidadeProdutoLanchonete(quantidadeProdutoEditado,codigoProdutoEditado);
-                                                            System.out.println("Produto editado!");
-                                                        }catch (IllegalArgumentException iae){
-                                                            System.out.println(iae.getMessage());
-                                                        }
+                                                        editarQuantidadeDeProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
 
                                                         break;
                                                     case 4: // sair
@@ -211,14 +179,7 @@ public class Main {
                     break;
                 // TODO acho que da pra colocar isso em algum controller e chamar 1 vez só pelo facade
                 case 2: // Criar conta
-                    System.out.println("Nome do usuario: ");
-                    String nomeCriarUsuario = entradaString();
-                    System.out.println("Senha do usuario: ");
-                    String senhaCriarUsuario = entradaString();
-                    sistemaFacade.criarContaCliente(nomeCriarUsuario,senhaCriarUsuario);
-                    if (sistemaFacade.isLogado()){
-                        System.out.println("Usuário criado com sucesso!");
-                    }
+                    criarConta(sistemaFacade);
                     break;
 
                 case 3: // Sair
@@ -231,6 +192,65 @@ public class Main {
 
         }while (Sistema.statusSistema);
 
+    }
+
+    private static void editarPrecoProdutoLanchonete(SistemaFacade sistemaFacade, String codigoProdutoEditado) {
+        System.out.println("Digite o novo nome do produto");
+        double precoProdutoEditado = Double.parseDouble(entradaString());
+        try{
+            sistemaFacade.editaPrecoProdutoLanchonete(precoProdutoEditado, codigoProdutoEditado);
+            System.out.println("Produto editado!");
+        }catch (IllegalArgumentException iae){
+            System.out.println(iae.getMessage());
+        }
+    }
+
+    private static void editarNomeProdutoLanchonete(SistemaFacade sistemaFacade, String codigoProdutoEditado) {
+        System.out.println("Digite o novo nome do produto");
+        String nomeProdutoEditadoNome = entradaString();
+        try {
+            sistemaFacade.editaNomeProdutoLanchonete(nomeProdutoEditadoNome, codigoProdutoEditado);
+            System.out.println("Produto editado!");
+        }catch (IllegalArgumentException iae){
+            System.out.println(iae.getMessage());
+        }
+    }
+
+    private static void adicionarProdutoLanchonete(SistemaFacade sistemaFacade) {
+        System.out.println("Nome do novo produto:");
+        String nomeNovoProduto = entradaString();
+        System.out.println("Preço do novo produto:");
+        String precoNovoProduto = entradaString();
+        System.out.println("Quantidade do novo produto:");
+        int quantidadeNovoProduto = entradaInteiro();
+        try{
+            sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),quantidadeNovoProduto);
+            System.out.println("Produtos adicionados!");
+        }catch (IllegalArgumentException iae){
+            System.out.println(iae.getMessage());
+        }
+    }
+
+    private static void editarQuantidadeDeProdutoLanchonete(SistemaFacade sistemaFacade, String codigoProdutoEditado) {
+        System.out.println("Digite a quantidade do produto");
+        int quantidadeProdutoEditado = entradaInteiro();
+        try {
+            sistemaFacade.editaQuantidadeProdutoLanchonete(quantidadeProdutoEditado, codigoProdutoEditado);
+            System.out.println("Produto editado!");
+        }catch (IllegalArgumentException iae){
+            System.out.println(iae.getMessage());
+        }
+    }
+
+    private static void criarConta(SistemaFacade sistemaFacade) {
+        System.out.println("Nome do usuario: ");
+        String nomeCriarUsuario = entradaString();
+        System.out.println("Senha do usuario: ");
+        String senhaCriarUsuario = entradaString();
+        sistemaFacade.criarContaCliente(nomeCriarUsuario,senhaCriarUsuario);
+        if (sistemaFacade.isLogado()){
+            System.out.println("Usuário criado com sucesso!");
+        }
     }
 
     public static void fecharPedido(SistemaFacade sistemaFacade) {
@@ -251,10 +271,8 @@ public class Main {
             sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete,quantidadeProdutoLanchonete);
             System.out.println("Produtos adicionados!");
             sistemaFacade.verCarrinho();
-        }catch (IllegalArgumentException iae){
+        }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
             System.err.println(iae.getMessage());
-        }catch (IndexOutOfBoundsException iobe){
-            System.err.println(iobe.getMessage());
         }
     }
 
@@ -267,10 +285,8 @@ public class Main {
             sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
             System.out.println("Ingressos adicionados!");
             sistemaFacade.verCarrinho();
-        }catch (IllegalArgumentException iae){
+        }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
             System.err.println(iae.getMessage());
-        }catch (IndexOutOfBoundsException iobe){
-            System.err.println(iobe.getMessage());
         }
     }
 
