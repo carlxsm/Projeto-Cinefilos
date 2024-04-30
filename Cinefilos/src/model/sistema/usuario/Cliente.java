@@ -1,48 +1,30 @@
 package model.sistema.usuario;
 
-import java.util.List;
-
 import controller.CarrinhoCompras;
 import model.Produto;
 import model.sistema.fidelidade.NivelFidelidade;
 import model.sistema.fidelidade.ProgramaFidelidade;
 
-public class Cliente extends Usuario {
+import java.util.List;
 
-    private ProgramaFidelidade ProgramaFidelidade;
-    private NivelFidelidade NivelFidelidade;
+public class Cliente extends Usuario{
+    private CarrinhoCompras carrinhoCompras = new CarrinhoCompras();
+    private ProgramaFidelidade programaFidelidade = new ProgramaFidelidade(0);
 
-    public Cliente(String nome, String senha, int categoriaUsuario, int pontosInciais) {
-        super(nome, senha, categoriaUsuario);
-        this.ProgramaFidelidade = new ProgramaFidelidade(pontosInciais);
+    public Cliente(String nome, String senha) {
+        super(nome, senha, CategoriaUsuario.CLIENTE);
     }
 
-    public int getPontos() {
-        return ProgramaFidelidade.getPontos();
-    }
-
-    public NivelFidelidade getNivelFidelidade() {
-        return NivelFidelidade;
-    }
-
-    public void acumulaPontos(int pontos) {
-        ProgramaFidelidade.setPontos(ProgramaFidelidade.getPontos() + pontos);
-    }
-
-    public List<Produto> getCarrinhoCompras() {
-        return carrinhoCompras.getCarrinhoDeCompras(); // TODO esse método está duplicado, só sei que aqui tem
-                                                       // getCarrinho e em CarrinhoDeCompras tb, o correto seria apenas
-                                                       // 1.
-    }
-
-    public CarrinhoCompras getCarrinhoComprasObj() { // TODO resolver o nome desse metodo
+//    public List<Produto> getCarrinhoCompras() {
+//        return carrinhoCompras.getCarrinhoDeCompras(); //TODO esse método está duplicado, só sei que aqui tem getCarrinho e em CarrinhoDeCompras tb, o correto seria apenas 1.
+//    }
+    public CarrinhoCompras getCarrinhoCompras() { // TODO resolver o nome desse metodo
         return carrinhoCompras;
     }
 
     public ProgramaFidelidade getProgramaFidelidade() {
         return programaFidelidade;
     }
-
     public void setProgramaFidelidade(ProgramaFidelidade programaFidelidade) {
         this.programaFidelidade = programaFidelidade;
     }

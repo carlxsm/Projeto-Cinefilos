@@ -1,28 +1,30 @@
 package model.sistema.fidelidade;
 
 public enum NivelFidelidade {
-    SILVER(1,1,1),GOLD(1,0.97,120),PLATINUM(2,0.94,160),BLACK(3,0.88,200);
-    private int valor;
-    private double precoDesconto;
-    private double desconto;
-
+    SILVER(1,1,35),GOLD(0.97,120,40),PLATINUM(0.94,160,45),BLACK(0.88,200,50);
+    private double valorDesconto;
+    private double valorInicialDesconto;
+    private double pontosPorValorGasto;
     //TODO Desconto
-    NivelFidelidade(int valor, double precoDesconto, double desconto) {
-
-        this.valor = valor;
-        this.precoDesconto = precoDesconto;
-        this.desconto = desconto;
+    NivelFidelidade( double precoDesconto, double desconto,double pontosPorValorGasto) {
+        this.valorDesconto = precoDesconto;
+        this.valorInicialDesconto = desconto;
+        this.pontosPorValorGasto = pontosPorValorGasto;
     }
 
-    public int getValor() {
-        return valor;
+    public double getPontosPorValorGasto() {
+        return pontosPorValorGasto;
+    }
+    public double getValorDesconto() {
+        return valorDesconto;
     }
 
-    public double getPrecoDesconto() {
-        return precoDesconto;
+    public double getValorInicialDesconto() {
+        return valorInicialDesconto;
     }
 
-    public double getDesconto() {
-        return desconto;
+    @Override
+    public String toString() {
+        return "NivelFidelidade{" +this.name()+'}';
     }
 }

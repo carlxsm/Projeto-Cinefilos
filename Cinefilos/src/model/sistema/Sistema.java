@@ -3,36 +3,41 @@ package model.sistema;
 import model.sistema.usuario.Usuario;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Sistema {
 
-    private static Usuario LOGADO = null;
+    public static Scanner scan = new Scanner(System.in);
+    public static Usuario LOGADO = null;
+    public static boolean statusSistema = true;
 
-    private final ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
+    private final static ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
 
-    public Sistema() {}
-
-    public boolean isLogado(){
-        if (LOGADO != null){
-            return true;
-        }else {
-            return false;
-        }
+    public int adicionaNovoUsuario(Usuario usuario){
+        usuariosCadastrados.add(usuario);
+        return usuariosCadastrados.indexOf(usuario);
     }
-    public Usuario logar(String login, String senha){
-        for (Usuario usuario: usuariosCadastrados){
-            if (usuario.getNome().equals(login) && usuario.getSenha().equals(senha)){
-                return usuario;
+
+    public static Usuario getLOGADO() {
+        return LOGADO;
+    }
+
+    public void setLOGADO(Usuario LOGADO) {
+        Sistema.LOGADO = LOGADO;
+    }
+
+    public boolean verificaUsuarioExiste(String nome){
+        for (Usuario user: usuariosCadastrados){
+            if(user.getNome().equals(nome)){
+                return true;
             }
         }
-        throw new IllegalArgumentException("Usuario não existe");
+        return false;
     }
 
-    public void deslogar(){
-        //TODO
+    public List<Usuario> getUsuariosCadastrados(){
+        return usuariosCadastrados;
     }
 
-    public void criarConta(){
-        //TODO
-    }
 }

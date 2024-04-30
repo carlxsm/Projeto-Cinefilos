@@ -25,12 +25,18 @@ public class ProgramaFidelidade {
     }
 
     public void atualizaNivel(){
-        //TODO Atualiza Nível
-    }
-    public double calculaDesconto(double valor){
-        if (valor >= fidelidade.getDesconto()){
-            return valor * fidelidade.getPrecoDesconto();
+        if (pontos >= 80){
+            setFidelidade(NivelFidelidade.BLACK);
+        } else if (pontos >= 50) {
+            setFidelidade(NivelFidelidade.PLATINUM);
+        }else if (pontos >= 20) {
+            setFidelidade(NivelFidelidade.GOLD);
         }
-        return valor;
+    }
+
+    public void adicionaPontos(double valorCompra){
+        if (valorCompra >= fidelidade.getPontosPorValorGasto()){
+            setPontos((int)(valorCompra / fidelidade.getPontosPorValorGasto()));
+        }
     }
 }
