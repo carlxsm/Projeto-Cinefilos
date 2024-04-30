@@ -22,6 +22,12 @@ public class GerenciaCinema {
     }
 
     public void adicionaFilmeEmCartaz(String nomeFilme, int duracao) {
+        if (nomeFilme.isEmpty() || nomeFilme.length() < 3) {
+            throw new IllegalArgumentException("Nome inválido.");
+        }
+        if (duracao < 1) {
+            throw new IllegalArgumentException("Duração inválida");
+        }
         Filme novoFilme = new Filme(nomeFilme,duracao);
         filmesEmCartaz.add(novoFilme);
     }
@@ -39,6 +45,9 @@ public class GerenciaCinema {
 
     // TODO esse método parece encaixar melhor no Facade.
     public void adicionaFilmeNaSala(Sala sala, Filme filme,int horario){
+        if (horario<0){
+            throw new IllegalArgumentException("Horário inválido");
+        }
         criaIngressos(filme,sala,horario);
         sala.adicionarFilme(filme);
     }
@@ -111,13 +120,27 @@ public class GerenciaCinema {
             }
         }
     }
+    public static void removeFilmeCinema(Filme filme){
+        if (!filmesEmCartaz.contains(filme)){
+            throw new IllegalArgumentException("O filme informado não existe");
+        }
+        filmesEmCartaz.remove(filme);
+    }
 
 
     public Sala getSalaCinema(int indice){
-        return salasCinema.get(indice);
+        try {
+            return salasCinema.get(indice);
+        }catch (IndexOutOfBoundsException iobe){
+            throw new IndexOutOfBoundsException("A sala informada não existe.");
+        }
     }
     public Filme getFilmeNaSala(int indice){
-        return filmesEmCartaz.get(indice);
+        try{
+            return filmesEmCartaz.get(indice);
+        }catch (IndexOutOfBoundsException iobe){
+            throw new IndexOutOfBoundsException("A Filme informada não existe.");
+        }
     }
 
     public static List<List<ProdutoIngressoCinema>> getIngressosDoCinema() {

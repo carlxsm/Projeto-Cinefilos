@@ -4,6 +4,7 @@ import controller.GerenciaCinema;
 import controller.GerenciaLanchonete;
 import controller.GerenciaSistema;
 import model.Produto;
+import model.cinema.Filme;
 import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
 import model.lanchonete.ProdutoLanchonete;
@@ -80,6 +81,9 @@ public class SistemaFacade {
         }
     }
 
+    public List<Filme> filmesEmCartaz(){
+        return GerenciaCinema.getFilmesEmCartaz();
+    }
     //fixme ACHO QUE PODEMOS APAGAR ESSE MÉTODO
     public void removeProdutoCarrinhoCompras(Produto produto){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
@@ -138,8 +142,26 @@ public class SistemaFacade {
 
         gerenciaCinema.adicionaFilmeNaSala(gerenciaCinema.getSalaCinema(indexSala),gerenciaCinema.getFilmeNaSala(indexFilme),horario);
     }
-    public void removerFilmeCinema(){}
-       // Lanchonete
+    public List<Sala> getSalasDisponiveis(){
+        return GerenciaCinema.getSalasCinema();
+    }
+    public void editaNomeFilme(String codigo, String novoNomeFilme){
+
+    }
+    public void editaDuracaoFilme(String codigo, int duracao){
+        ;
+    }
+
+    public void editaTipoSalaCinema(int tipoSalaAtual, int NovoTipoSala){
+    }
+    public void editaNomeSalaCinema(int indexSala, String novoNomeSala){
+
+    }
+
+    public void removerFilmeCinema(int indexFilme){
+        GerenciaCinema.removeFilmeCinema(gerenciaCinema.getFilmeNaSala(indexFilme));
+    }
+    // Lanchonete
     public void criaNovoProdutoLanchonete(String nome, double preco,int quantidade){
         //nome,preco,quantidade
 

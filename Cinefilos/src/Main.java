@@ -1,4 +1,6 @@
 import facades.SistemaFacade;
+import model.cinema.Filme;
+import model.cinema.Sala;
 import model.sistema.Sistema;
 import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
@@ -143,17 +145,69 @@ public class Main {
                             System.out.println("1 - Atualizar exibições | 2 - Atualiza Lanchonete | 3 - Relatório | 4 - Sair");
                             switch (entradaInteiro()){
                                 case 1: // Atualizar exibicoes
-                                    sistemaFacade.exibeIngressosDisponiveis();
-                                    System.out.println("1 - Editar filme | 2 - Editar ingresso | 3 - Editar sala | 4 - Sair");
+                                    System.out.println("1 - Editar cinema | 2 - Sair");
                                     switch (entradaInteiro()){
-                                        case 1:
+                                        case 1: // Adiciona Filme e Remove filme
+                                            sistemaFacade.exibeIngressosDisponiveis();
+                                            System.out.println("1 - Cria Filme | 2 - Remover filme | 3 - Cria Ingresso | 4 - Volta");
+                                            switch (entradaInteiro()){
+                                                case 1: // Criar filme
+                                                    try {
+                                                        String nomeFilme = entradaString();
+                                                        int duracaoFilme = entradaInteiro();
+                                                        sistemaFacade.criaNovoFilme(nomeFilme,duracaoFilme);
+                                                        System.out.println("Filme criada com sucesso!");
+                                                    }catch (IllegalArgumentException iae){
+                                                        System.err.println(iae.getMessage());
+                                                    }
+                                                    break;
+                                                case 2: // Remover filme
+                                                    // TODO Isso aqui abaixo tem que ser um método que vai ser reaproveitado no case 3.
+                                                    int i = 0;
+                                                    for (Filme filme: sistemaFacade.filmesEmCartaz()){
+                                                        System.out.println(filme.getNomeFilme() +" | "+ filme.getDuracao()+" | - Index: "+i );
+                                                        i++;
+                                                    }
+                                                    try {
+                                                        System.out.println("Informe o index do filme que deseja remover:");
+                                                        sistemaFacade.removerFilmeCinema(entradaInteiro());
+                                                    }catch (IllegalArgumentException iae){
+                                                        System.out.println(iae.getMessage());
+                                                    }
+                                                    break;
+                                                case 3 : // Cria ingresso
+                                                    int j = 0;
+                                                    for (Filme filme: sistemaFacade.filmesEmCartaz()){
+                                                        System.out.println(filme.getNomeFilme() +" | "+ filme.getDuracao()+" | - Index: "+j );
+                                                        j++;
+                                                    }
 
+                                                    System.out.println("Informe o index do filme :");
+                                                    int indexFilme = entradaInteiro();
+
+                                                    int k = 0;
+                                                    for (Sala sala: sistemaFacade.getSalasDisponiveis()){
+                                                        System.out.println(sala.getNomeSala() +" | "+ sala.getTipoSala()+" | - Index: "+ k );
+                                                        k++;
+                                                    }
+                                                    System.out.println("Informe o index da sala :");
+                                                    int indexSala = entradaInteiro();
+
+                                                    System.out.println("Informe o horário:");
+                                                    int horario = entradaInteiro();
+                                                    try {
+                                                        sistemaFacade.adicionarNovoFilmeCinema(indexSala,indexFilme,horario);
+                                                    }catch (IllegalArgumentException iae){
+                                                        System.err.println(iae.getMessage());
+                                                    }catch (IndexOutOfBoundsException iobe){
+                                                        System.err.println(iobe.getMessage());
+                                                }
+                                                    break;
+                                                case 4 : // voltar
+                                                    break;
+                                            }
                                             break;
-                                        case 2:
-                                            break;
-                                        case 3:
-                                            break;
-                                        case 4:
+                                        case 2: // Sair
                                             break;
                                         default:
                                             System.err.println("Opção inválida!");
