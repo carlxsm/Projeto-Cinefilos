@@ -88,8 +88,7 @@ public class GerenciaCinema {
                 }
             }
         }
-        return null;
-        //throw new IllegalArgumentException("Não existe ingresso com código informado.");
+        throw new IllegalArgumentException("Ingresso não encontrado!");
     }
 
     // OBSERVACAO

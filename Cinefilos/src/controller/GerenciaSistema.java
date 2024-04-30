@@ -47,7 +47,7 @@ public class GerenciaSistema {
         }catch (IllegalArgumentException iae){
             throw iae;
         }
-        if (!sistema.verificaUsuarioExiste(nome)){
+        if (!Sistema.verificaUsuarioExiste(nome)){
             sistema.adicionaNovoUsuario(new Cliente(nome,senha));
         }else{
             throw new IllegalArgumentException("Usuário já existe");
@@ -84,6 +84,7 @@ public class GerenciaSistema {
             throw new IllegalArgumentException("Entrada Inválida");
         }
     }
+
 
     public CategoriaUsuario getCategoriaUsuario(){
         if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){

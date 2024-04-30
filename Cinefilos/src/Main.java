@@ -4,6 +4,7 @@ import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
 import view.TelaCliente;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -15,6 +16,7 @@ public class Main {
         // TODO remover os prints do facade
         // TODO tratar error na main
         // TODO criar classe menu
+
         SistemaFacade sistemaFacade = new SistemaFacade();
         sistemaFacade.abreCinema();
 
@@ -40,6 +42,11 @@ public class Main {
         sistemaFacade.criaNovoFilme("Shrek 1",200);
         sistemaFacade.adicionarNovoFilmeCinema(2,3,1700);
 
+
+        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Salgada", 18,100);
+        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Doce", 20,100);
+        sistemaFacade.criaNovoProdutoLanchonete("Coquinha gelada", 8,80);
+
         sistemaFacade.teste();
 
         do {
@@ -47,17 +54,22 @@ public class Main {
             switch (entradaInteiro()){
                 case 1: // Login
                     // TODO acho que da pra colocar isso em algum controller e chamar 1 vez só pelo facade
-                    System.out.println("Nome do usuario: ");
-                    String nomeLogin = entradaString();
-                    System.out.println("Senha do usuario: ");
-                    String senhaLogin = entradaString();
-                    sistemaFacade.fazerLogin(nomeLogin,senhaLogin);
+                    try {
+                        System.out.println("Nome do usuario: ");
+                        String nomeLogin = entradaString();
+                        System.out.println("Senha do usuario: ");
+                        String senhaLogin = entradaString();
+                        sistemaFacade.fazerLogin(nomeLogin,senhaLogin);
+                    }catch (IllegalArgumentException iae){
+                        System.err.println("Nome ou Senha Incorretos.\n");
+                        break;
+                    }
                     // Menu Cliente
                     if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.CLIENTE){
                         while (Sistema.getLOGADO() != null){
                             TelaCliente.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
                             System.out.println("1 - Filmes | 2 - Lanchonete | 3 - Fechar pedido | 4 - Deslogar"); // TODO fazer com que só exiba a op. 3 se o carrinho !empty()
-                            switch (entradaInteiro()){ //TODO fazer os default
+                            switch (entradaInteiro()){
                                 case 1: // exibição
                                     sistemaFacade.exibeIngressosDisponiveis();
                                     System.out.println("1 - Comprar | 0 - Voltar");
@@ -67,12 +79,20 @@ public class Main {
                                             String escolhaDoIngresso = entradaString();
                                             System.out.println("Insira a quantidade");
                                             int escolhaQuantidadeIngressos = entradaInteiro();
-                                            sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
-                                            System.out.println("Ingressos adicionados!");
-                                            sistemaFacade.verCarrinho();
+                                            try {
+                                                sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
+                                                System.out.println("Ingressos adicionados!");
+                                                sistemaFacade.verCarrinho();
+                                            }catch (IllegalArgumentException iae){
+                                                System.err.println(iae.getMessage());
+                                            }catch (IndexOutOfBoundsException iobe){
+                                                System.err.println(iobe.getMessage());
+                                            }
                                             break;
                                         case 0: // voltar
                                             break;
+                                        default:
+                                            System.err.println("Opção Inválida");
                                     }
                                     break;
                                 case 2: // exibição lanchonete
@@ -84,28 +104,39 @@ public class Main {
                                             String escolhaDoProdutoLanchonete = entradaString();
                                             System.out.println("Insira a quantidade");
                                             int quantidadeProdutoLanchonete = entradaInteiro();
-                                            sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete,quantidadeProdutoLanchonete);
-                                            System.out.println("Produtos adicionados!");
-                                            sistemaFacade.verCarrinho();
+                                            try {
+                                                sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete,quantidadeProdutoLanchonete);
+                                                System.out.println("Produtos adicionados!");
+                                                sistemaFacade.verCarrinho();
+                                            }catch (IllegalArgumentException iae){
+                                                System.err.println(iae.getMessage());
+                                            }catch (IndexOutOfBoundsException iobe){
+                                                System.err.println(iobe.getMessage());
+                                            }
                                             break;
                                         case 0: // voltar
                                             break;
+                                        default:
+                                            System.err.println("Opção inválida");
                                     }
                                     break;
                                 case 3: // fechar pedido
                                     try{
-                                        System.out.println("Compra concluida");
                                         System.out.println("Total: R$"+sistemaFacade.finalizaCompra()); //TODO tentar mandar isso para um método da view
-                                    }catch (IllegalArgumentException iae){
+                                        System.out.println("Compra concluida");
+                                    }catch (NoSuchElementException iae){
                                         System.out.println(iae.getMessage());
                                     }
                                     break;
                                 case 4: // cancela compra e sair do sistema
                                     sistemaFacade.cancelarCompra();
                                     break;
+                                default:
+                                    System.err.println("Opção inválida!");
                             }
                         }
                     }
+
                     // Menu gerente
                     else if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.GERENTE) {
                         while (Sistema.getLOGADO() != null){
@@ -136,29 +167,46 @@ public class Main {
                                                     case 1: // editar nome
                                                         System.out.println("Digite o novo nome do produto");
                                                         String nomeProdutoEditadoNome = entradaString();
-                                                        sistemaFacade.editaNomeProdutoLanchonete(nomeProdutoEditadoNome,codigoProdutoEditado);
-                                                        System.out.println("Produto editado!");
+                                                        try {
+                                                            sistemaFacade.editaNomeProdutoLanchonete(nomeProdutoEditadoNome,codigoProdutoEditado);
+                                                            System.out.println("Produto editado!");
+                                                        }catch (IllegalArgumentException iae){
+                                                            System.out.println(iae.getMessage());
+                                                        }
                                                         break;
                                                     case 2: // Edita preco
                                                         System.out.println("Digite o novo nome do produto");
                                                         double precoProdutoEditado = Double.parseDouble(entradaString());
-                                                        sistemaFacade.editaPrecoProdutoLanchonete(precoProdutoEditado,codigoProdutoEditado);
-                                                        System.out.println("Produto editado!");
+                                                        try{
+                                                            sistemaFacade.editaPrecoProdutoLanchonete(precoProdutoEditado,codigoProdutoEditado);
+                                                            System.out.println("Produto editado!");
+                                                        }catch (IllegalArgumentException iae){
+                                                            System.out.println(iae.getMessage());
+                                                        }
                                                         break;
                                                     case 3: // edita quantidade
                                                         System.out.println("Digite a quantidade do produto");
                                                         int quantidadeProdutoEditado = entradaInteiro();
-                                                        sistemaFacade.editaQuantidadeProdutoLanchonete(quantidadeProdutoEditado,codigoProdutoEditado);
-                                                        System.out.println("Produto editado!");
+                                                        try {
+                                                            sistemaFacade.editaQuantidadeProdutoLanchonete(quantidadeProdutoEditado,codigoProdutoEditado);
+                                                            System.out.println("Produto editado!");
+                                                        }catch (IllegalArgumentException iae){
+                                                            System.out.println(iae.getMessage());
+                                                        }
+
                                                         break;
                                                     case 4: // sair
                                                         break;
+                                                    default:
+                                                        System.err.println("Opção Inválida!");
                                                 }
                                             break;
-                                        case 3: // remove
+                                        case 3: // remove produto
                                             break;
                                         case 4: // voltar
                                             break;
+                                        default:
+                                            System.err.println("Opção inválida");
                                     }
                                     break;
                                 case 3: // gerar relatorio de compras
@@ -166,6 +214,9 @@ public class Main {
                                     break;
                                 case 4: // sair do sistema
                                     sistemaFacade.deslogar();
+                                    break;
+                                default:
+                                    System.err.println("Opção inválida");
                                     break;
                             }
                         }
@@ -183,9 +234,12 @@ public class Main {
                     }
                     break;
 
-                case 3:
+                case 3: // Sair
                     sistemaFacade.fechaCinema(); //TODO Arquivos
                     break;
+
+                default:
+                    System.err.println("Opção inválida!");
             }
 
         }while (Sistema.statusSistema);

@@ -2,7 +2,9 @@ package view;
 
 import model.sistema.usuario.Cliente;
 
-public class TelaCliente {
+
+    public class TelaCliente {
+
     public static void imprimeDadosCliente(Cliente cliente){
         System.out.println(cliente.getNome());
         System.out.print("Cliente "+cliente.getProgramaFidelidade().getFidelidade()+" | ");
@@ -36,5 +38,4 @@ public class TelaCliente {
         System.out.println("| [3] - Limpar       |");
         System.out.println("+====================+");
     }
-
 }

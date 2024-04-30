@@ -26,9 +26,9 @@ public class Sistema {
         Sistema.LOGADO = LOGADO;
     }
 
-    public boolean verificaUsuarioExiste(String nome){
+    public static boolean verificaUsuarioExiste(String nome){
         for (Usuario user: usuariosCadastrados){
-            if(user.getNome().equals(nome)){
+            if(user.getNome().equalsIgnoreCase(nome)){
                 return true;
             }
         }

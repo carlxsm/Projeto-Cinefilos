@@ -44,7 +44,7 @@ public class SistemaFacade {
         try {
             gerenciaSistema.registrarNovoCliente(nome,senha);
         }catch (IllegalArgumentException iae){
-            System.out.println();
+            System.out.println(iae.getMessage());
         }
     }
     public void criarContaGerente(String nome, String senha){
@@ -53,12 +53,12 @@ public class SistemaFacade {
 
     public void fazerLogin(String nome, String senha){
         if (!gerenciaSistema.getSistema().verificaUsuarioExiste(nome)){
-            System.out.println("O usuário não existe.");
+            throw new IllegalArgumentException("Usuario não existe.");
         }
         try {
             gerenciaSistema.fazerLogin(nome,senha);
         }catch (IllegalArgumentException iae){
-            System.out.println("Senha incorreta");
+            throw new IllegalArgumentException("Senha incorreta.");
         }
     }
 
@@ -75,8 +75,8 @@ public class SistemaFacade {
     public void adicionaProdutoCarrinhoCompras(String codProduto, int quantidade){
         try{
             ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().adicionarProduto(codProduto, quantidade);
-        }catch (IndexOutOfBoundsException iobe){
-            System.out.println(iobe.getMessage());
+        }catch (IllegalArgumentException iae){
+            throw iae;
         }
     }
 
@@ -154,14 +154,23 @@ public class SistemaFacade {
         return GerenciaLanchonete.getProdLanchonetePorCodigo(codigo);
     }
     public void editaNomeProdutoLanchonete(String nome,String codigo){
+        if (nome.isEmpty() || nome.isBlank()){
+            throw new IllegalArgumentException("Insira um nome válido!");
+        }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
         produtoEditado.setNome(nome);
     }
     public void editaPrecoProdutoLanchonete(double preco,String codigo){
+        if (preco <= 0){
+            throw new IllegalArgumentException("O preço precisa ser maior que zero.");
+        }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
         produtoEditado.setPreco(preco);
     }
     public void editaQuantidadeProdutoLanchonete(int quantidade,String codigo){
+        if (quantidade <= 0){
+            throw new IllegalArgumentException("A quantidade precisa ser maior que zero.");
+        }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
         produtoEditado.setQuantidade(quantidade);
     }
