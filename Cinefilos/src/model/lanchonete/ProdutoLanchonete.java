@@ -19,7 +19,7 @@ public class ProdutoLanchonete extends Produto implements Serializable {
 
     @Override
     public String toString() {
-        return super.getNome()+" | "+super.getPreco()+" | "+super.getCodigo();
+        return super.getNome()+" | "+super.getPreco()+" | Cod: "+super.getCodigo();
     }
 
 }

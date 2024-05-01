@@ -58,7 +58,7 @@ public class Main {
                                     break;
                                 case 2: // exibição lanchonete
                                     for (Produto produto: sistemaFacade.exibeProdutosLanchoneteDisponiveis()){
-                                        System.out.println(produto+ " Quantidade:"+produto.getQuantidade());
+                                        System.out.println(produto+ "| Quantidade:"+produto.getQuantidade());
                                     }
                                     Menu.menuComprarVoltar();
                                     switch (entradaInteiro()){
@@ -141,6 +141,7 @@ public class Main {
                                     }
                                     break;
                                 case 2: // Atualizar lanchonete
+
                                     sistemaFacade.exibeProdutosLanchoneteDisponiveis();
                                     Menu.imprimeMenuAtualizalanchonete();
                                     switch (entradaInteiro()){

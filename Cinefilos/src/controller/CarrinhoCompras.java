@@ -71,7 +71,7 @@ public class CarrinhoCompras implements Serializable {
                     if (produtoLanchonete.getQuantidade() < quantidade){
                         throw new IndexOutOfBoundsException("Não existe "+ produtoLanchonete.getNome() +" suficientes");
                     }
-                    carrinhoDeCompras.add(new ProdutoLanchonete(produtoLanchonete.getNome(),produtoLanchonete.getPreco()* produtoLanchonete.getQuantidade(),1,produtoLanchonete.getCodigo()));
+                    carrinhoDeCompras.add(new ProdutoLanchonete(produtoLanchonete.getNome(),produtoLanchonete.getPreco() * quantidade,1,produtoLanchonete.getCodigo()));
                     GerenciaLanchonete.getProdLanchonetePorCodigo(codigo).setQuantidade(GerenciaLanchonete.getProdLanchonetePorCodigo(codigo).getQuantidade() - quantidade);
                 }
             }
