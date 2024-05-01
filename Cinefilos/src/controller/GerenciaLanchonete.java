@@ -35,7 +35,15 @@ public class GerenciaLanchonete {
         }
     }
     public void adicionaProduto(ProdutoLanchonete produtoLanchonete){
-
+        if (produtoLanchonete.getNome().isEmpty()|| produtoLanchonete.getNome().isBlank() || produtoLanchonete.getNome().length() < 4){
+            throw new IllegalArgumentException("Insira um nome válido!");
+        }
+        if (produtoLanchonete.getPreco() < 0){
+            throw new IllegalArgumentException("O preço precisa ser maior que zero");
+        }
+        if (produtoLanchonete.getQuantidade() < 0){
+            throw new IllegalArgumentException("O quantidade precisa ser maior que zero");
+        }
         produtosDisponiveis.add(produtoLanchonete);
     }
     public void remove(ProdutoLanchonete produtoLanchonete){

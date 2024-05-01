@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class Sistema {
 
-    public static Scanner scan = new Scanner(System.in);
     public static Usuario LOGADO = null;
     public static boolean statusSistema = true;
 
@@ -27,9 +26,9 @@ public class Sistema {
         Sistema.LOGADO = LOGADO;
     }
 
-    public boolean verificaUsuarioExiste(String nome){
+    public static boolean verificaUsuarioExiste(String nome){
         for (Usuario user: usuariosCadastrados){
-            if(user.getNome().equals(nome)){
+            if(user.getNome().equalsIgnoreCase(nome)){
                 return true;
             }
         }
