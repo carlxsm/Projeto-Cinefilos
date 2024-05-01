@@ -24,8 +24,7 @@ public class SistemaFacade {
     GerenciaCinema gerenciaCinema = new GerenciaCinema();
     GerenciaLanchonete gerenciaLanchonete = new GerenciaLanchonete();
 
-
-    //Sistema
+    // Sistema
     public void abreCinema() throws IOException, ClassNotFoundException {
         Sistema.importUsuarios();
         Sistema.importTotalCompras();
@@ -34,6 +33,7 @@ public class SistemaFacade {
         Sistema.importFilmesEmCartaz();
         Sistema.importIngressoDisponiveis();
     }
+
     public void fechaCinema() throws IOException {
         Sistema.salvaUsuarios();
         Sistema.salvaTotalCompras();
@@ -45,26 +45,27 @@ public class SistemaFacade {
         gerenciaSistema.desligaSistema();
     }
 
-    public void criarContaCliente(String nome, String senha){
-        gerenciaSistema.registrarNovoCliente(nome,senha);
+    public void criarContaCliente(String nome, String senha) {
+        gerenciaSistema.registrarNovoCliente(nome, senha);
 
     }
-    public void criarContaGerente(String nome, String senha){
-        gerenciaSistema.registraNovoGerente(nome,senha);
+
+    public void criarContaGerente(String nome, String senha) {
+        gerenciaSistema.registraNovoGerente(nome, senha);
     }
 
-    public void fazerLogin(String nome, String senha){
-        if (!Sistema.verificaUsuarioExiste(nome)){
+    public void fazerLogin(String nome, String senha) {
+        if (!Sistema.verificaUsuarioExiste(nome)) {
             throw new IllegalArgumentException("Usuario não existe.");
         }
         try {
-            gerenciaSistema.fazerLogin(nome,senha);
-        }catch (IllegalArgumentException iae){
+            gerenciaSistema.fazerLogin(nome, senha);
+        } catch (IllegalArgumentException iae) {
             throw new IllegalArgumentException("Senha incorreta.");
         }
     }
 
-    public void deslogar(){
+    public void deslogar() {
         gerenciaSistema.deslogar();
     }
 
@@ -72,116 +73,133 @@ public class SistemaFacade {
         return gerenciaSistema.getCategoriaUsuario();
     }
 
-
     // Cliente
-    public void adicionaProdutoCarrinhoCompras(String codProduto, int quantidade){
-        try{
+    public void adicionaProdutoCarrinhoCompras(String codProduto, int quantidade) {
+        try {
             ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().adicionarProduto(codProduto, quantidade);
-        }catch (IllegalArgumentException iae){
+        } catch (IllegalArgumentException iae) {
             throw iae;
         }
     }
 
-    public List<Filme> filmesEmCartaz(){
+    public List<Filme> filmesEmCartaz() {
         return GerenciaCinema.getFilmesEmCartaz();
     }
 
-    public void limpaCarrinhoCompras(){
+    public void limpaCarrinhoCompras() {
         ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().esvaziarCarrinho();
     }
 
-    public List<Produto> verCarrinho(){
+    public List<Produto> verCarrinho() {
         return ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().getCarrinhoDeCompras();
     }
 
-    public List<String> exibeIngressosDisponiveis(){
+    public List<String> exibeIngressosDisponiveis() {
         return gerenciaCinema.getIngressosDisponiveis();
     }
 
-    public List<ProdutoLanchonete> exibeProdutosLanchoneteDisponiveis(){
+    public List<ProdutoLanchonete> exibeProdutosLanchoneteDisponiveis() {
         return GerenciaLanchonete.getProdutosDisponiveis();
     }
 
-    public double finalizaCompra(){
+    public double finalizaCompra() {
         double total = ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().finalizaPedido();
         ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().adicionaPontos(total);
         ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().atualizaNivel();
         return total;
     }
+
     public void cancelarCompra() {
         ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().cancelarCompra();
         gerenciaSistema.deslogar();
     }
 
     // Gerente
-       // Cinema
-    public void criaNovaSalaCinema(String nomeSala, String tipoSala){
-        gerenciaCinema.adicionaSalaCinema(new Sala(nomeSala,tipoSala));
+    // Cinema
+    public void criaNovaSalaCinema(String nomeSala, String tipoSala) {
+        gerenciaCinema.adicionaSalaCinema(new Sala(nomeSala, tipoSala));
     }
-    public void criaNovoFilme(String nomeFilme, int duracaoFilme){
-        gerenciaCinema.adicionaFilmeEmCartaz(nomeFilme,duracaoFilme);
-    }
-    public void adicionarNovoFilmeCinema(int indexSala, int indexFilme, int horario){
 
-        gerenciaCinema.adicionaFilmeNaSala(gerenciaCinema.getSalaCinema(indexSala),gerenciaCinema.getFilmeNaSala(indexFilme),horario);
+    public void criaNovoFilme(String nomeFilme, int duracaoFilme) {
+        gerenciaCinema.adicionaFilmeEmCartaz(nomeFilme, duracaoFilme);
     }
-    public List<Sala> getSalasDisponiveis(){
+
+    public void adicionarNovoFilmeCinema(int indexSala, int indexFilme, int horario) {
+
+        gerenciaCinema.adicionaFilmeNaSala(gerenciaCinema.getSalaCinema(indexSala),
+                gerenciaCinema.getFilmeNaSala(indexFilme), horario);
+    }
+
+    public List<Sala> getSalasDisponiveis() {
         return GerenciaCinema.getSalasCinema();
     }
 
-
-    public void removerFilmeCinema(int indexFilme){
+    public void removerFilmeCinema(int indexFilme) {
         GerenciaCinema.removeFilmeCinema(gerenciaCinema.getFilmeNaSala(indexFilme));
     }
-    // Lanchonete
-    public void criaNovoProdutoLanchonete(String nome, double preco,int quantidade){
-        //nome,preco,quantidade
 
-        gerenciaLanchonete.adicionaProduto(new ProdutoLanchonete(nome,preco,quantidade,("L"+GerenciaSistema.geraCodigo())));
+    // Lanchonete
+    public void criaNovoProdutoLanchonete(String nome, double preco, int quantidade) {
+        // nome,preco,quantidade
+
+        gerenciaLanchonete
+                .adicionaProduto(new ProdutoLanchonete(nome, preco, quantidade, ("L" + GerenciaSistema.geraCodigo())));
     }
-    public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete){
-        if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE){
+
+    public void adicionaNovoProdutoLanchonete(ProdutoLanchonete produtoLanchonete) {
+        if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE) {
             ((Gerente) Sistema.getLOGADO()).getGerenciaLanchonete().adicionaProduto(produtoLanchonete);
         }
         throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
-    public ProdutoLanchonete getProdutoLanchonete(String codigo){
+
+    public ProdutoLanchonete getProdutoLanchonete(String codigo) {
         return GerenciaLanchonete.getProdLanchonetePorCodigo(codigo);
     }
 
-    public void editaNomeProdutoLanchonete(String nome,String codigo){
-        if (nome.isBlank() || nome.length() < 4){
+    public void editaNomeProdutoLanchonete(String nome, String codigo) {
+        if (nome.isBlank() || nome.length() < 4) {
             throw new IllegalArgumentException("Insira um nome válido!");
         }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
         produtoEditado.setNome(nome);
     }
-    public void editaPrecoProdutoLanchonete(double preco,String codigo){
-        if (preco <= 0){
+
+    public void editaPrecoProdutoLanchonete(double preco, String codigo) {
+        if (preco <= 0) {
             throw new IllegalArgumentException("O preço precisa ser maior que zero.");
         }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
         produtoEditado.setPreco(preco);
     }
-    public void editaQuantidadeProdutoLanchonete(int quantidade,String codigo){
-        if (quantidade <= 0){
+
+    public void editaQuantidadeProdutoLanchonete(int quantidade, String codigo) {
+        if (quantidade <= 0) {
             throw new IllegalArgumentException("A quantidade precisa ser maior que zero.");
         }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
         produtoEditado.setQuantidade(quantidade);
     }
 
+    public void removerProdutoLanchonete(String codigo) {
+        if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.GERENTE) {
+            gerenciaLanchonete.remove(codigo);
+        } else {
+            throw new IllegalArgumentException("Poduto nao existe");
+        }
+    }
 
-    public List<String> gerarRelatorio(){
+    public List<String> gerarRelatorio() {
         return gerenciaSistema.relatorioVendas();
     }
 
-    //util
+    // util
 
-    public boolean isLogado(){
-        if (Sistema.getLOGADO()!=null){
+    public boolean isLogado() {
+        if (Sistema.getLOGADO() != null) {
             return true;
-        }return false;
+        }
+        return false;
     }
 
 }

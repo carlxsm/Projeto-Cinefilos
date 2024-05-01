@@ -15,38 +15,40 @@ import java.util.Scanner;
 
 public class Main {
     public static Scanner scan = new Scanner(System.in);
+
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         // TODO remover os prints do facade
         SistemaFacade sistemaFacade = new SistemaFacade();
-        try{
+        sistemaFacade.criarContaGerente("adimin", "admin");
+        try {
             sistemaFacade.abreCinema();
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
 
         }
 
         do {
             Menu.menuPrincipal();
-            switch (entradaInteiro()){
+            switch (entradaInteiro()) {
                 case 1: // Login
                     try {
                         fazerLogin(sistemaFacade);
-                    }catch (IllegalArgumentException iae){
+                    } catch (IllegalArgumentException iae) {
                         System.err.println("Nome ou Senha Incorretos.\n");
                         break;
                     }
                     // Menu Cliente
-                    if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.CLIENTE){
-                        while (Sistema.getLOGADO() != null){
+                    if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.CLIENTE) {
+                        while (Sistema.getLOGADO() != null) {
                             Menu.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
                             Menu.menuSegundario();
-                            switch (entradaInteiro()){
+                            switch (entradaInteiro()) {
                                 case 1: // exibição cinema
-                                    for (String ingresso: sistemaFacade.exibeIngressosDisponiveis()){
+                                    for (String ingresso : sistemaFacade.exibeIngressosDisponiveis()) {
                                         System.out.println(ingresso);
                                     }
                                     Menu.menuComprarVoltar();
-                                    switch (entradaInteiro()){
+                                    switch (entradaInteiro()) {
                                         case 1: // comprar ingresso
                                             comprarIngrsso(sistemaFacade);
                                             break;
@@ -57,11 +59,11 @@ public class Main {
                                     }
                                     break;
                                 case 2: // exibição lanchonete
-                                    for (Produto produto: sistemaFacade.exibeProdutosLanchoneteDisponiveis()){
-                                        System.out.println(produto+ " Quantidade:"+produto.getQuantidade());
+                                    for (Produto produto : sistemaFacade.exibeProdutosLanchoneteDisponiveis()) {
+                                        System.out.println(produto + " Quantidade:" + produto.getQuantidade());
                                     }
                                     Menu.menuComprarVoltar();
-                                    switch (entradaInteiro()){
+                                    switch (entradaInteiro()) {
                                         case 1: // comprar
                                             comprarLanchonete(sistemaFacade);
                                             break;
@@ -85,35 +87,36 @@ public class Main {
 
                     // Menu gerente
                     else if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.GERENTE) {
-                        while (Sistema.getLOGADO() != null){
+                        while (Sistema.getLOGADO() != null) {
                             Menu.imprimeMenuGerente();
-                            switch (entradaInteiro()){
+                            switch (entradaInteiro()) {
                                 case 1: // Atualizar exibicoes
                                     Menu.imprimeMenuEditarCinema();
-                                    switch (entradaInteiro()){
+                                    switch (entradaInteiro()) {
                                         case 1: // Adiciona Filme e Remove filme
-                                            for (String ingresso: sistemaFacade.exibeIngressosDisponiveis()){
+                                            for (String ingresso : sistemaFacade.exibeIngressosDisponiveis()) {
                                                 System.out.println(ingresso);
                                             }
                                             Menu.imprimeMenuAdicionarRemoverFilme();
-                                            switch (entradaInteiro()){
+                                            switch (entradaInteiro()) {
                                                 case 1: // Criar filme
                                                     try {
                                                         criarFilme(sistemaFacade);
-                                                    }catch (IllegalArgumentException iae){
+                                                    } catch (IllegalArgumentException iae) {
                                                         System.err.println(iae.getMessage());
                                                     }
                                                     break;
                                                 case 2: // Remover filme
                                                     exibeListaDeFilmes(sistemaFacade);
                                                     try {
-                                                        System.out.println("Informe o index do filme que deseja remover:");
+                                                        System.out.println(
+                                                                "Informe o index do filme que deseja remover:");
                                                         sistemaFacade.removerFilmeCinema(entradaInteiro());
-                                                    }catch (IllegalArgumentException iae){
+                                                    } catch (IllegalArgumentException iae) {
                                                         System.out.println(iae.getMessage());
                                                     }
                                                     break;
-                                                case 3 : // Cria ingresso
+                                                case 3: // Cria ingresso
                                                     exibeListaDeFilmes(sistemaFacade);
                                                     System.out.println("Informe o index do filme :");
                                                     int indexFilme = entradaInteiro();
@@ -125,12 +128,13 @@ public class Main {
                                                     System.out.println("Informe o horário:");
                                                     int horario = entradaInteiro();
                                                     try {
-                                                        sistemaFacade.adicionarNovoFilmeCinema(indexSala,indexFilme,horario);
-                                                    }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
+                                                        sistemaFacade.adicionarNovoFilmeCinema(indexSala, indexFilme,
+                                                                horario);
+                                                    } catch (IllegalArgumentException | IndexOutOfBoundsException iae) {
                                                         System.err.println(iae.getMessage());
                                                     }
                                                     break;
-                                                case 4 : // voltar
+                                                case 4: // voltar
                                                     break;
                                             }
                                             break;
@@ -141,35 +145,40 @@ public class Main {
                                     }
                                     break;
                                 case 2: // Atualizar lanchonete
-                                    sistemaFacade.exibeProdutosLanchoneteDisponiveis();
+                                    System.out.println(sistemaFacade.exibeProdutosLanchoneteDisponiveis());
                                     Menu.imprimeMenuAtualizalanchonete();
-                                    switch (entradaInteiro()){
+                                    switch (entradaInteiro()) {
                                         case 1: // adiciona
                                             adicionarProdutoLanchonete(sistemaFacade);
                                             break;
                                         case 2: // edita
                                             System.out.println("Codigo do produto:");
                                             String codigoProdutoEditado = entradaString();
-                                            System.out.println(sistemaFacade.getProdutoLanchonete(codigoProdutoEditado));
+                                            System.out
+                                                    .println(sistemaFacade.getProdutoLanchonete(codigoProdutoEditado));
                                             Menu.imprimeMenuEditarLanchonete();
-                                                switch (entradaInteiro()){
-                                                    case 1: // editar nome
-                                                        editarNomeProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
-                                                        break;
-                                                    case 2: // Edita preco
-                                                        editarPrecoProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
-                                                        break;
-                                                    case 3: // edita quantidade
-                                                        editarQuantidadeDeProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
+                                            switch (entradaInteiro()) {
+                                                case 1: // editar nome
+                                                    editarNomeProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
+                                                    break;
+                                                case 2: // Edita preco
+                                                    editarPrecoProdutoLanchonete(sistemaFacade, codigoProdutoEditado);
+                                                    break;
+                                                case 3: // edita quantidade
+                                                    editarQuantidadeDeProdutoLanchonete(sistemaFacade,
+                                                            codigoProdutoEditado);
 
-                                                        break;
-                                                    case 4: // sair
-                                                        break;
-                                                    default:
-                                                        System.err.println("Opção Inválida!");
-                                                }
+                                                    break;
+                                                case 4: // sair
+                                                    break;
+                                                default:
+                                                    System.err.println("Opção Inválida!");
+                                            }
                                             break;
                                         case 3: // remove produto
+                                            System.out.println("Informe o codigo do produto que deseja remover:");
+                                            String codigo = entradaString();
+                                            sistemaFacade.removerProdutoLanchonete(codigo);
                                             break;
                                         case 4: // voltar
                                             break;
@@ -178,7 +187,7 @@ public class Main {
                                     }
                                     break;
                                 case 3: // gerar relatorio de compras
-                                    for (String venda: sistemaFacade.gerarRelatorio()){
+                                    for (String venda : sistemaFacade.gerarRelatorio()) {
                                         System.out.println(venda);
                                     }
                                     break;
@@ -196,42 +205,42 @@ public class Main {
                     try {
                         criarConta(sistemaFacade);
                         System.out.println("Usuário criado!");
-                    }catch (IllegalArgumentException iae){
+                    } catch (IllegalArgumentException iae) {
                         System.out.println(iae.getMessage());
                     }
                     break;
 
                 case 3: // Sair
                     System.out.println("Fechado!");
-                    sistemaFacade.fechaCinema(); //TODO Arquivos
+                    sistemaFacade.fechaCinema(); // TODO Arquivos
                     break;
 
                 default:
                     System.err.println("Opção inválida!");
             }
 
-        }while (Sistema.statusSistema);
+        } while (Sistema.statusSistema);
     }
 
     private static void criarFilme(SistemaFacade sistemaFacade) {
         String nomeFilme = entradaString();
         int duracaoFilme = entradaInteiro();
-        sistemaFacade.criaNovoFilme(nomeFilme,duracaoFilme);
+        sistemaFacade.criaNovoFilme(nomeFilme, duracaoFilme);
         System.out.println("Filme criada com sucesso!");
     }
 
     private static void exibeListaDeSalas(SistemaFacade sistemaFacade) {
         int k = 0;
-        for (Sala sala: sistemaFacade.getSalasDisponiveis()){
-            System.out.println(sala.getNomeSala() +" | "+ sala.getTipoSala()+" | - Index: "+ k );
+        for (Sala sala : sistemaFacade.getSalasDisponiveis()) {
+            System.out.println(sala.getNomeSala() + " | " + sala.getTipoSala() + " | - Index: " + k);
             k++;
         }
     }
 
     private static void exibeListaDeFilmes(SistemaFacade sistemaFacade) {
         int i = 0;
-        for (Filme filme: sistemaFacade.filmesEmCartaz()){
-            System.out.println(filme.getNomeFilme() +" | "+ filme.getDuracao()+" | - Index: "+i );
+        for (Filme filme : sistemaFacade.filmesEmCartaz()) {
+            System.out.println(filme.getNomeFilme() + " | " + filme.getDuracao() + " | - Index: " + i);
             i++;
         }
     }
@@ -239,10 +248,10 @@ public class Main {
     private static void editarPrecoProdutoLanchonete(SistemaFacade sistemaFacade, String codigoProdutoEditado) {
         System.out.println("Digite o novo nome do produto");
         double precoProdutoEditado = Double.parseDouble(entradaString());
-        try{
+        try {
             sistemaFacade.editaPrecoProdutoLanchonete(precoProdutoEditado, codigoProdutoEditado);
             System.out.println("Produto editado!");
-        }catch (IllegalArgumentException iae){
+        } catch (IllegalArgumentException iae) {
             System.out.println(iae.getMessage());
         }
     }
@@ -253,7 +262,7 @@ public class Main {
         try {
             sistemaFacade.editaNomeProdutoLanchonete(nomeProdutoEditadoNome, codigoProdutoEditado);
             System.out.println("Produto editado!");
-        }catch (IllegalArgumentException iae){
+        } catch (IllegalArgumentException iae) {
             System.out.println(iae.getMessage());
         }
     }
@@ -265,10 +274,11 @@ public class Main {
         String precoNovoProduto = entradaString();
         System.out.println("Quantidade do novo produto:");
         int quantidadeNovoProduto = entradaInteiro();
-        try{
-            sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),quantidadeNovoProduto);
+        try {
+            sistemaFacade.criaNovoProdutoLanchonete(nomeNovoProduto, Double.parseDouble(precoNovoProduto),
+                    quantidadeNovoProduto);
             System.out.println("Produtos adicionados!");
-        }catch (IllegalArgumentException iae){
+        } catch (IllegalArgumentException iae) {
             System.out.println(iae.getMessage());
         }
     }
@@ -279,7 +289,7 @@ public class Main {
         try {
             sistemaFacade.editaQuantidadeProdutoLanchonete(quantidadeProdutoEditado, codigoProdutoEditado);
             System.out.println("Produto editado!");
-        }catch (IllegalArgumentException iae){
+        } catch (IllegalArgumentException iae) {
             System.out.println(iae.getMessage());
         }
     }
@@ -289,14 +299,14 @@ public class Main {
         String nomeCriarUsuario = entradaString();
         System.out.println("Senha do usuario: ");
         String senhaCriarUsuario = entradaString();
-        sistemaFacade.criarContaCliente(nomeCriarUsuario,senhaCriarUsuario);
+        sistemaFacade.criarContaCliente(nomeCriarUsuario, senhaCriarUsuario);
     }
 
     public static void fecharPedido(SistemaFacade sistemaFacade) {
-        try{
-            System.out.println("Total: R$"+ sistemaFacade.finalizaCompra());
+        try {
+            System.out.println("Total: R$" + sistemaFacade.finalizaCompra());
             System.out.println("Compra concluida");
-        }catch (NoSuchElementException iae){
+        } catch (NoSuchElementException iae) {
             System.out.println(iae.getMessage());
         }
     }
@@ -307,13 +317,13 @@ public class Main {
         System.out.println("Insira a quantidade");
         int quantidadeProdutoLanchonete = entradaInteiro();
         try {
-            sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete,quantidadeProdutoLanchonete);
+            sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete, quantidadeProdutoLanchonete);
             System.out.println("Produtos adicionados!");
             System.out.println("\n- Carrinho de Compras -");
-            for (Produto produto: sistemaFacade.verCarrinho()){
+            for (Produto produto : sistemaFacade.verCarrinho()) {
                 System.out.println(produto);
             }
-        }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
+        } catch (IllegalArgumentException | IndexOutOfBoundsException iae) {
             System.err.println(iae.getMessage());
         }
     }
@@ -327,10 +337,10 @@ public class Main {
             sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
             System.out.println("Ingressos adicionados!");
             System.out.println("\n- Carrinho de Compras -");
-            for (Produto produto: sistemaFacade.verCarrinho()){
+            for (Produto produto : sistemaFacade.verCarrinho()) {
                 System.out.println(produto);
             }
-        }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
+        } catch (IllegalArgumentException | IndexOutOfBoundsException iae) {
             System.err.println(iae.getMessage());
         }
     }
@@ -340,23 +350,24 @@ public class Main {
         String nomeLogin = entradaString();
         System.out.println("Senha do usuario: ");
         String senhaLogin = entradaString();
-        sistemaFacade.fazerLogin(nomeLogin,senhaLogin);
+        sistemaFacade.fazerLogin(nomeLogin, senhaLogin);
     }
 
-    public static int  entradaInteiro(){
-        if(scan.hasNextInt()){
+    public static int entradaInteiro() {
+        if (scan.hasNextInt()) {
             return scan.nextInt();
-        }scan.nextLine();
+        }
+        scan.nextLine();
         System.out.println("Entrada invalida!");
         return entradaInteiro();
     }
 
-    public static String entradaString(){
+    public static String entradaString() {
         String entrada = scan.next();
         try {
             scan.nextLine();
             return entrada;
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.println("Entrada inválida, tente novamente");
         }
         return entradaString();
