@@ -4,9 +4,14 @@ import model.Produto;
 import model.sistema.Sistema;
 import model.sistema.usuario.Usuario;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ProdutoIngressoCinema extends Produto {
+public class ProdutoIngressoCinema extends Produto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+
     private Filme filme;
     private Sala sala;
     private int assento;

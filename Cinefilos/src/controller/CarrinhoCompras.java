@@ -8,11 +8,18 @@ import model.sistema.fidelidade.NivelFidelidade;
 import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-public class CarrinhoCompras {
+public class CarrinhoCompras implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+
     NivelFidelidade tipoCliente;
     LocalDateTime data = LocalDateTime.now();
     GerenciaSistema gerenciaSistema = new GerenciaSistema();
@@ -37,25 +44,39 @@ public class CarrinhoCompras {
     }
 
     public void adicionarProduto(String codigo, int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero");
+        }
         if (codigo.startsWith("C") || codigo.startsWith("c")){
             for (int i = 0; i < quantidade; i++){
                 try{
                     Produto produto = GerenciaCinema.getIngressoPorCodigo(codigo);
+                    if (produto.getQuantidade() < quantidade){
+                        throw new IndexOutOfBoundsException("Não existe ingressos suficientes");
+                    }
                     carrinhoDeCompras.add(produto);
                     GerenciaCinema.removeIngressoPorCodigo(codigo); // TODO se o cliente deslogar fazer os itens do carrinho voltar para seus lugares.
-                }catch (IndexOutOfBoundsException iobe){
-                    throw new IllegalArgumentException("Não existe produtos suficientes");
+                }catch (IllegalArgumentException iae){
+                    throw iae;
                 }
             }
             for (int i = 0; i < quantidade; i++){
             }
 
         } else if (codigo.startsWith("L")|| codigo.startsWith("l")) {
+            boolean produtoExiste = false;
             for (ProdutoLanchonete produtoLanchonete: GerenciaLanchonete.getProdutosDisponiveis()){
                 if (produtoLanchonete.getCodigo().equalsIgnoreCase(codigo)){
+                    produtoExiste = true;
+                    if (produtoLanchonete.getQuantidade() < quantidade){
+                        throw new IndexOutOfBoundsException("Não existe "+ produtoLanchonete.getNome() +" suficientes");
+                    }
                     carrinhoDeCompras.add(new ProdutoLanchonete(produtoLanchonete.getNome(),produtoLanchonete.getPreco()* produtoLanchonete.getQuantidade(),1,produtoLanchonete.getCodigo()));
                     GerenciaLanchonete.getProdLanchonetePorCodigo(codigo).setQuantidade(GerenciaLanchonete.getProdLanchonetePorCodigo(codigo).getQuantidade() - quantidade);
                 }
+            }
+            if (!produtoExiste){
+                throw new IllegalArgumentException("Produto não existe");
             }
         }else {
             throw new IllegalArgumentException("Produto não encontrado");
@@ -83,6 +104,9 @@ public class CarrinhoCompras {
     }
 
     public double finalizaPedido(){
+        if (carrinhoDeCompras.isEmpty()){
+            throw new NoSuchElementException("Carrinho está vazio!");
+        }
         this.tipoCliente = ((Cliente) Sistema.getLOGADO()).getProgramaFidelidade().getFidelidade();
         gerenciaSistema.adicionaCompras(this);
         double total = valorComDesconto();
@@ -107,7 +131,7 @@ public class CarrinhoCompras {
                 for (List<ProdutoIngressoCinema> lista01: gerenciaCinema.getIngressosDoCinema()){
                     for (ProdutoIngressoCinema produtoIngresso: lista01){
                         if (produtoIngresso.getCodigo().equals(produto.getCodigo())){
-                            lista01.add((ProdutoIngressoCinema) produto);
+                            //lista01.add((ProdutoIngressoCinema) produto);
                         }
                     }
                 }

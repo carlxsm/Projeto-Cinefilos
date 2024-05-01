@@ -1,5 +1,7 @@
 package model.sistema.usuario;
 
-public enum CategoriaUsuario {
+import java.io.Serializable;
+
+public enum CategoriaUsuario implements Serializable {
     CLIENTE, GERENTE;
 }

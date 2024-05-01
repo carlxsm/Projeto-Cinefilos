@@ -1,6 +1,11 @@
 package model.sistema.fidelidade;
 
-public class ProgramaFidelidade {
+import java.io.Serializable;
+
+public class ProgramaFidelidade implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private NivelFidelidade fidelidade = NivelFidelidade.SILVER;
     private int pontos;
 

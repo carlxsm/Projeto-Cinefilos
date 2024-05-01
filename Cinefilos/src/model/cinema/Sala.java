@@ -1,9 +1,12 @@
 package model.cinema;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Sala {
+public class Sala implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     // com essa estrutura, nao pode haver elementos repitidos
     // Set é uma interface que nao permite

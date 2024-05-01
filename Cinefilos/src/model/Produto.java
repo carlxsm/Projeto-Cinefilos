@@ -1,6 +1,9 @@
 package model;
 
-public abstract class Produto {
+import java.io.Serializable;
+
+public abstract class Produto implements Serializable {
+
     String nome;
     double preco;
     int quantidade;
@@ -12,6 +15,10 @@ public abstract class Produto {
         this.preco = preco;
         this.quantidade = quantidade;
         this.codigo = codigo;
+
+    }
+
+    public Produto() {
 
     }
 
