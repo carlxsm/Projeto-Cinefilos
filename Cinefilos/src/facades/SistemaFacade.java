@@ -45,17 +45,17 @@ public class SistemaFacade {
         gerenciaSistema.desligaSistema();
     }
 
-    public void criarContaCliente(String nome, String senha) {
-        gerenciaSistema.registrarNovoCliente(nome, senha);
+    public void criarContaCliente(String nome, String email, String senha) {
+        gerenciaSistema.registrarNovoCliente(nome, email, senha);
 
     }
 
-    public void criarContaGerente(String nome, String senha) {
-        gerenciaSistema.registraNovoGerente(nome, senha);
+    public void criarContaGerente(String nome, String email, String senha) {
+        gerenciaSistema.registraNovoGerente(nome, email, senha);
     }
 
     public void fazerLogin(String nome, String senha) {
-        if (!Sistema.verificaUsuarioExiste(nome)) {
+        if (!Sistema.verificaEmailUsuarioExiste(nome)) {
             throw new IllegalArgumentException("Usuario não existe.");
         }
         try {

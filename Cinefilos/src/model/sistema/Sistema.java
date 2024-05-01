@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-public class Sistema implements Serializable{
+public class Sistema implements Serializable {
 
     private static final Logger logger = Logger.getLogger("Sistema");
 
@@ -25,7 +25,6 @@ public class Sistema implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-
     static final String INFO_USUARIOS_CRIADOS = "infoUsuarios.dat";
     static final String INFO_TOTAL_COMPRAS = "infoTotalCompras.dat";
     static final String INFO_PRODUTOS_LANCHONETE = "infoProdutoLanchonete.dat";
@@ -33,13 +32,12 @@ public class Sistema implements Serializable{
     static final String INFO_FILMES_CARTAZ = "infoFilmesEmCartaz.dat";
     static final String INFO_INGRESSOS_DISPONIVEIS = "infoIngressosDisponivel.dat";
 
-
     public static Usuario LOGADO = null;
     public static boolean statusSistema = true;
 
     private static ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
 
-    public int adicionaNovoUsuario(Usuario usuario){
+    public int adicionaNovoUsuario(Usuario usuario) {
         usuariosCadastrados.add(usuario);
         return usuariosCadastrados.indexOf(usuario);
     }
@@ -52,20 +50,33 @@ public class Sistema implements Serializable{
         Sistema.LOGADO = LOGADO;
     }
 
-    public static boolean verificaUsuarioExiste(String nome){
+    public static boolean verificaNomeUsuarioExiste(String nome) {
 
-        for (Usuario user: usuariosCadastrados){
-            if(user.getNome() == null){
+        for (Usuario user : usuariosCadastrados) {
+            if (user.getNome() == null) {
                 return false;
             }
-            if(user.getNome().equalsIgnoreCase(nome)){
+            if (user.getNome().equalsIgnoreCase(nome)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static List<Usuario> getUsuariosCadastrados(){
+    public static boolean verificaEmailUsuarioExiste(String email) {
+
+        for (Usuario user : usuariosCadastrados) {
+            if (user.getEmail() == null) {
+                return false;
+            }
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<Usuario> getUsuariosCadastrados() {
         return usuariosCadastrados;
     }
 
@@ -75,9 +86,9 @@ public class Sistema implements Serializable{
 
     public static void salvaUsuarios() throws IOException {
         ObjectOutputStream out = null;
-        try{
+        try {
             out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(INFO_USUARIOS_CRIADOS)));
-            out.writeObject(usuariosCadastrados);  // Salva a lista inteira de usuários cadastrados
+            out.writeObject(usuariosCadastrados); // Salva a lista inteira de usuários cadastrados
             logger.info("Lista de usuários salva com sucesso.");
         } finally {
             if (out != null) {
@@ -85,18 +96,19 @@ public class Sistema implements Serializable{
             }
         }
     }
+
     public static void importUsuarios() throws IOException, ClassNotFoundException {
         ObjectInputStream in = null;
         try {
             in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(INFO_USUARIOS_CRIADOS)));
             usuariosCadastrados = (ArrayList<Usuario>) in.readObject();
 
-//            for (Usuario usuarioLido : usuariosLidos) {
-//                if (!usuariosCadastrados.contains(usuarioLido)) {
-//                    logger.info("Lista de usuários salva com sucesso.");
-//                    usuariosCadastrados.add(usuarioLido);
-//                }
-//            }
+            // for (Usuario usuarioLido : usuariosLidos) {
+            // if (!usuariosCadastrados.contains(usuarioLido)) {
+            // logger.info("Lista de usuários salva com sucesso.");
+            // usuariosCadastrados.add(usuarioLido);
+            // }
+            // }
         } finally {
             if (in != null) {
                 in.close();
@@ -106,15 +118,16 @@ public class Sistema implements Serializable{
 
     public static void salvaTotalCompras() throws IOException {
         ObjectOutputStream out = null;
-        try{
+        try {
             out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(INFO_TOTAL_COMPRAS)));
-            out.writeObject(GerenciaSistema.getTotalCompras());  // Salva a lista inteira de compras
+            out.writeObject(GerenciaSistema.getTotalCompras()); // Salva a lista inteira de compras
         } finally {
             if (out != null) {
                 out.close();
             }
         }
     }
+
     public static void importTotalCompras() throws IOException, ClassNotFoundException {
         ObjectInputStream in = null;
         try {
@@ -127,11 +140,13 @@ public class Sistema implements Serializable{
             }
         }
     }
+
     public static void salvaProdutosLanchonetes() throws IOException {
         ObjectOutputStream out = null;
-        try{
+        try {
             out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(INFO_PRODUTOS_LANCHONETE)));
-            out.writeObject(GerenciaLanchonete.getProdutosDisponiveis());  // Salva a lista inteira de produtos da lanchonete
+            out.writeObject(GerenciaLanchonete.getProdutosDisponiveis()); // Salva a lista inteira de produtos da
+                                                                          // lanchonete
         } finally {
             if (out != null) {
                 out.close();
@@ -154,9 +169,9 @@ public class Sistema implements Serializable{
 
     public static void salvaSalasCinema() throws IOException {
         ObjectOutputStream out = null;
-        try{
+        try {
             out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(INFO_SALAS_CINEMA)));
-            out.writeObject(GerenciaCinema.getSalasCinema());  // Salva a lista inteira de salas de cinema
+            out.writeObject(GerenciaCinema.getSalasCinema()); // Salva a lista inteira de salas de cinema
         } finally {
             if (out != null) {
                 out.close();
@@ -179,9 +194,9 @@ public class Sistema implements Serializable{
 
     public static void salvaFilmesEmCartaz() throws IOException {
         ObjectOutputStream out = null;
-        try{
+        try {
             out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(INFO_FILMES_CARTAZ)));
-            out.writeObject(GerenciaCinema.getFilmesEmCartaz());  // Salva a lista inteira de filmes
+            out.writeObject(GerenciaCinema.getFilmesEmCartaz()); // Salva a lista inteira de filmes
         } finally {
             if (out != null) {
                 out.close();
@@ -204,9 +219,9 @@ public class Sistema implements Serializable{
 
     public static void salvaIngressosDisponiveis() throws IOException {
         ObjectOutputStream out = null;
-        try{
+        try {
             out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(INFO_INGRESSOS_DISPONIVEIS)));
-            out.writeObject(GerenciaCinema.getIngressosDoCinema());  // Salva a lista inteira de filmes
+            out.writeObject(GerenciaCinema.getIngressosDoCinema()); // Salva a lista inteira de filmes
         } finally {
             if (out != null) {
                 out.close();
@@ -226,8 +241,5 @@ public class Sistema implements Serializable{
             }
         }
     }
-
-
-
 
 }

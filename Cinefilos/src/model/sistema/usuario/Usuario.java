@@ -6,14 +6,16 @@ import java.util.Objects;
 public abstract class Usuario implements Serializable {
 
     private String nome;
+    private String email;
     private String senha;
     private CategoriaUsuario categoriaUsuario;
 
     public Usuario() {
     }
 
-    public Usuario(String nome, String senha, CategoriaUsuario categoriaUsuario2) {
+    public Usuario(String nome, String email, String senha, CategoriaUsuario categoriaUsuario2) {
         this.nome = nome;
+        this.email = email;
         this.senha = senha;
         this.categoriaUsuario = categoriaUsuario2;
     }
@@ -34,6 +36,14 @@ public abstract class Usuario implements Serializable {
         this.senha = senha;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public CategoriaUsuario getCategoriaUsuario() {
         return categoriaUsuario;
     }
@@ -44,10 +54,13 @@ public abstract class Usuario implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(nome, usuario.nome) && Objects.equals(senha, usuario.senha) && categoriaUsuario == usuario.categoriaUsuario;
+        return Objects.equals(nome, usuario.nome) && Objects.equals(senha, usuario.senha)
+                && categoriaUsuario == usuario.categoriaUsuario;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Main {
 
         // TODO remover os prints do facade
         SistemaFacade sistemaFacade = new SistemaFacade();
-        sistemaFacade.criarContaGerente("adimin", "admin");
+        sistemaFacade.criarContaGerente("admin", "admin@admin.com", "admin");
         try {
             sistemaFacade.abreCinema();
         } catch (FileNotFoundException e) {
@@ -297,9 +297,11 @@ public class Main {
     private static void criarConta(SistemaFacade sistemaFacade) {
         System.out.println("Nome do usuario: ");
         String nomeCriarUsuario = entradaString();
+        System.out.println("Email do usuario: ");
+        String emailCriarUsuario = entradaString();
         System.out.println("Senha do usuario: ");
         String senhaCriarUsuario = entradaString();
-        sistemaFacade.criarContaCliente(nomeCriarUsuario, senhaCriarUsuario);
+        sistemaFacade.criarContaCliente(nomeCriarUsuario, emailCriarUsuario, senhaCriarUsuario);
     }
 
     public static void fecharPedido(SistemaFacade sistemaFacade) {
@@ -346,7 +348,7 @@ public class Main {
     }
 
     public static void fazerLogin(SistemaFacade sistemaFacade) {
-        System.out.println("Nome do usuario: ");
+        System.out.println("Email do usuario: ");
         String nomeLogin = entradaString();
         System.out.println("Senha do usuario: ");
         String senhaLogin = entradaString();

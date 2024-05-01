@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GerenciaSistema implements Serializable {
 
@@ -51,48 +53,60 @@ public class GerenciaSistema implements Serializable {
         return relatorioVendas;
     }
 
-    public void registrarNovoCliente(String nome, String senha) {
+    public void registrarNovoCliente(String nome, String email, String senha) {
         try {
             validaNomeSenha(nome);
+            validaEmail(email);
             validaNomeSenha(senha);
         } catch (IllegalArgumentException iae) {
             throw iae;
         }
-        if (!Sistema.verificaUsuarioExiste(nome)) {
-            sistema.adicionaNovoUsuario(new Cliente(nome, senha));
+        if (!Sistema.verificaNomeUsuarioExiste(nome)) {
+            if (!Sistema.verificaEmailUsuarioExiste(email)) {
+                sistema.adicionaNovoUsuario(new Cliente(nome, email, senha));
+            } else {
+                throw new IllegalArgumentException("Email ja esta em uso");
+            }
         } else {
             throw new IllegalArgumentException("Usuário já existe");
         }
     }
 
-    public void registraNovoGerente(String nome, String senha) {
+    public void registraNovoGerente(String nome, String email, String senha) {
         try {
             validaNomeSenha(nome);
+            validaEmail(email);
             validaNomeSenha(senha);
         } catch (IllegalArgumentException iae) {
             throw iae;
         }
-        if (!Sistema.verificaUsuarioExiste(nome)) {
-            sistema.adicionaNovoUsuario(new Gerente(nome, senha));
+        if (!Sistema.verificaNomeUsuarioExiste(nome)) {
+            sistema.adicionaNovoUsuario(new Gerente(nome, email, senha));
         } else {
             throw new IllegalArgumentException("Usuário já existe");
         }
     }
 
-    public void fazerLogin(String nome, String senha) {
+    public void fazerLogin(String email, String senha) {
         for (Usuario user : Sistema.getUsuariosCadastrados()) {
-            if (user.getNome().equals(nome) && user.getSenha().equals(senha)) {
+            if (user.getEmail().equals(email) && user.getSenha().equals(senha)) {
                 sistema.setLOGADO(user);
+                return;
             }
         }
-        if (Sistema.getLOGADO() == null) {
-            throw new IllegalArgumentException("Senha incorreta");
-        }
+        throw new IllegalArgumentException("Email ou senha incorretos.");
     }
 
     public void validaNomeSenha(String nome) {
         if (nome.length() < 4 || nome.isBlank()) {
             throw new IllegalArgumentException("Entrada Inválida");
+        }
+    }
+
+    public void validaEmail(String email) {
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        if (!email.matches(regex)) {
+            throw new IllegalArgumentException("Formato de email inválido.");
         }
     }
 
