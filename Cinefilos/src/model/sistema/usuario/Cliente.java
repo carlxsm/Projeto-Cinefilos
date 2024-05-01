@@ -5,9 +5,15 @@ import model.Produto;
 import model.sistema.fidelidade.NivelFidelidade;
 import model.sistema.fidelidade.ProgramaFidelidade;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
-public class Cliente extends Usuario{
+public class Cliente extends Usuario implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+
     private CarrinhoCompras carrinhoCompras = new CarrinhoCompras();
     private ProgramaFidelidade programaFidelidade = new ProgramaFidelidade(0);
 
@@ -27,5 +33,19 @@ public class Cliente extends Usuario{
     }
     public void setProgramaFidelidade(ProgramaFidelidade programaFidelidade) {
         this.programaFidelidade = programaFidelidade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Cliente cliente = (Cliente) o;
+        return Objects.equals(carrinhoCompras, cliente.carrinhoCompras) && Objects.equals(programaFidelidade, cliente.programaFidelidade);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), carrinhoCompras, programaFidelidade);
     }
 }

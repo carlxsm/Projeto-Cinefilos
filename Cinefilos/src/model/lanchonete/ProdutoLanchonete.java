@@ -2,9 +2,17 @@ package model.lanchonete;
 
 import model.Produto;
 
-public class ProdutoLanchonete extends Produto {
+import java.io.Serializable;
 
-    public ProdutoLanchonete(String nome, double preco, int quantidade,String codigo) {
+public class ProdutoLanchonete extends Produto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public ProdutoLanchonete() {
+        super();
+    }
+
+    public ProdutoLanchonete(String nome, double preco, int quantidade, String codigo) {
         super(nome, preco, quantidade, codigo);
     }
 

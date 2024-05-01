@@ -8,13 +8,18 @@ import model.sistema.fidelidade.NivelFidelidade;
 import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class CarrinhoCompras {
+public class CarrinhoCompras implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+
     NivelFidelidade tipoCliente;
     LocalDateTime data = LocalDateTime.now();
     GerenciaSistema gerenciaSistema = new GerenciaSistema();
@@ -126,7 +131,7 @@ public class CarrinhoCompras {
                 for (List<ProdutoIngressoCinema> lista01: gerenciaCinema.getIngressosDoCinema()){
                     for (ProdutoIngressoCinema produtoIngresso: lista01){
                         if (produtoIngresso.getCodigo().equals(produto.getCodigo())){
-                            lista01.add((ProdutoIngressoCinema) produto);
+                            //lista01.add((ProdutoIngressoCinema) produto);
                         }
                     }
                 }

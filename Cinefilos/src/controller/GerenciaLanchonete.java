@@ -3,15 +3,18 @@ package controller;
 import model.Produto;
 import model.lanchonete.ProdutoLanchonete;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class GerenciaLanchonete {
+public class GerenciaLanchonete implements Serializable {
 
     private static List<ProdutoLanchonete> produtosDisponiveis = new ArrayList<>();
 
+    public GerenciaLanchonete() {
+    }
 
     public static List<ProdutoLanchonete> getProdutosDisponiveis(){
         return produtosDisponiveis;

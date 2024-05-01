@@ -1,10 +1,13 @@
 package model.cinema;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Filme {
+public class Filme implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String nomeFilme;
     private int duracao;

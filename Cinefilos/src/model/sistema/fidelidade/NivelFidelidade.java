@@ -1,6 +1,9 @@
 package model.sistema.fidelidade;
 
-public enum NivelFidelidade {
+import java.io.Serializable;
+
+public enum NivelFidelidade implements Serializable {
+
     SILVER(1,1,35),GOLD(0.97,120,40),PLATINUM(0.94,160,45),BLACK(0.88,200,50);
     private double valorDesconto;
     private double valorInicialDesconto;

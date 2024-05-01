@@ -6,18 +6,26 @@ import model.sistema.Sistema;
 import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
     public static Scanner scan = new Scanner(System.in);
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
 
         // TODO remover os prints do facade
 
         SistemaFacade sistemaFacade = new SistemaFacade();
-        sistemaFacade.abreCinema();
+        try{
+            sistemaFacade.abreCinema();
+        }catch (FileNotFoundException e){
+
+        }
+
+        sistemaFacade.teste();
 
         sistemaFacade.criarContaGerente("admin","admin");
         sistemaFacade.criarContaCliente("user","user");
@@ -46,7 +54,6 @@ public class Main {
         sistemaFacade.criaNovoProdutoLanchonete("Pipoca Doce", 20,100);
         sistemaFacade.criaNovoProdutoLanchonete("Coquinha gelada", 8,80);
 
-        sistemaFacade.teste();
 
         do {
             Menu.menuPrincipal();
@@ -212,6 +219,7 @@ public class Main {
                     break;
 
                 case 3: // Sair
+                    System.out.println("Fechado!");
                     sistemaFacade.fechaCinema(); //TODO Arquivos
                     break;
 
@@ -220,7 +228,6 @@ public class Main {
             }
 
         }while (Sistema.statusSistema);
-
     }
 
     private static void criarFilme(SistemaFacade sistemaFacade) {

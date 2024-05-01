@@ -6,26 +6,29 @@ import model.sistema.usuario.Cliente;
 import model.sistema.usuario.Gerente;
 import model.sistema.usuario.Usuario;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GerenciaSistema {
+public class GerenciaSistema implements Serializable{
 
     final Sistema sistema = new Sistema();
     final static List<CarrinhoCompras> totalCompras = new ArrayList<>();
 
-    public List<CarrinhoCompras> getTotalCompras() {
+    public GerenciaSistema() {
+    }
+
+    public static List<CarrinhoCompras> getTotalCompras() {
         return totalCompras;
     }
 
-    public int adicionaCompras(CarrinhoCompras carrinhoCompras) {
+    public void adicionaCompras(CarrinhoCompras carrinhoCompras) {
         CarrinhoCompras carrinhoComprasClone = new CarrinhoCompras(carrinhoCompras.getTipoCliente(),carrinhoCompras.getData(),
                 carrinhoCompras.getGerenciaSistema(), carrinhoCompras.getGerenciaCinema(),carrinhoCompras.getCarrinhoDeCompras() );
         totalCompras.add(carrinhoComprasClone);
-        return totalCompras.indexOf(carrinhoComprasClone);
+        totalCompras.indexOf(carrinhoComprasClone);
     }
     public List<String> relatorioVendas() {
         List<String> relatorioVendas = new ArrayList<>();
@@ -61,15 +64,15 @@ public class GerenciaSistema {
         }catch (IllegalArgumentException iae){
             throw iae;
         }
-        if (!sistema.verificaUsuarioExiste(nome)){
+        if (!Sistema.verificaUsuarioExiste(nome)){
             sistema.adicionaNovoUsuario(new Gerente(nome,senha));
         }else{
             throw new IllegalArgumentException("Usuário já existe");
-        };
+        }
     }
 
     public void fazerLogin(String nome, String senha){
-        for (Usuario user: sistema.getUsuariosCadastrados()){
+        for (Usuario user: Sistema.getUsuariosCadastrados()){
             if (user.getNome().equals(nome) && user.getSenha().equals(senha)){
                 sistema.setLOGADO(user);
             }
@@ -80,7 +83,7 @@ public class GerenciaSistema {
     }
 
     public void validaNomeSenha(String nome){
-        if (nome.isEmpty() || nome.length() < 4 || nome.isBlank()){
+        if (nome.length() < 4 || nome.isBlank()){
             throw new IllegalArgumentException("Entrada Inválida");
         }
     }
@@ -100,6 +103,9 @@ public class GerenciaSistema {
         sistema.setLOGADO(null);
     }
 
+    public void desligaSistema(){
+        sistema.setStatusSistema(false);
+    }
     public Sistema getSistema(){
         return sistema;
     }

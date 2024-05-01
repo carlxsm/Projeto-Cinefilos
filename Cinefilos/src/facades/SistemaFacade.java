@@ -5,7 +5,6 @@ import controller.GerenciaLanchonete;
 import controller.GerenciaSistema;
 import model.Produto;
 import model.cinema.Filme;
-import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
 import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
@@ -14,33 +13,39 @@ import model.sistema.usuario.Cliente;
 import model.sistema.usuario.Gerente;
 import model.sistema.usuario.Usuario;
 
+import java.io.IOException;
 import java.util.List;
 
 public class SistemaFacade {
 
+    public SistemaFacade() {
+    }
+
     GerenciaSistema gerenciaSistema = new GerenciaSistema();
     GerenciaCinema gerenciaCinema = new GerenciaCinema();
     GerenciaLanchonete gerenciaLanchonete = new GerenciaLanchonete();
-    public static Usuario usuarioLogado = Sistema.getLOGADO(); // gerente ou usuario
 
 
     //Sistema
-    public void abreCinema(){
-        //TODO checar se tem arquivo pra carregar as listas
-        //TODO Carrega lista Filmes cinema
-        // TODO Carrega lista Salas cinema
-        // TODO Carrega lista de Produtos lanchonete
-        // TODO Carrega lista de Usuarios cadastrados
-        // TODO Carrega lista de vendas realizadas
+    public void abreCinema() throws IOException, ClassNotFoundException {
+        Sistema.importUsuarios();
+        Sistema.importTotalCompras();
+        Sistema.importProdutosLanchonetes();
+        Sistema.importSalasCinema();
+        Sistema.importFilmesEmCartaz();
+        Sistema.importIngressoDisponiveis();
     }
-    public void fechaCinema(){
-        // TODO salva as listas no arquivo
-        // TODO salva lista Filmes cinema
-        // TODO salva lista Salas cinema
-        // TODO salva lista de Produtos lanchonete
-        // TODO salva lista de Usuarios cadastrados
-        // TODO salva lista de vendas realizadas
+    public void fechaCinema() throws IOException {
+        Sistema.salvaUsuarios();
+        Sistema.salvaTotalCompras();
+        Sistema.salvaProdutosLanchonetes();
+        Sistema.salvaSalasCinema();
+        Sistema.salvaFilmesEmCartaz();
+        Sistema.salvaIngressosDisponiveis();
+        gerenciaSistema.deslogar();
+        gerenciaSistema.desligaSistema();
     }
+
     public void criarContaCliente(String nome, String senha){
         try {
             gerenciaSistema.registrarNovoCliente(nome,senha);
@@ -53,7 +58,7 @@ public class SistemaFacade {
     }
 
     public void fazerLogin(String nome, String senha){
-        if (!gerenciaSistema.getSistema().verificaUsuarioExiste(nome)){
+        if (!Sistema.verificaUsuarioExiste(nome)){
             throw new IllegalArgumentException("Usuario não existe.");
         }
         try {
@@ -83,13 +88,6 @@ public class SistemaFacade {
 
     public List<Filme> filmesEmCartaz(){
         return GerenciaCinema.getFilmesEmCartaz();
-    }
-    //fixme ACHO QUE PODEMOS APAGAR ESSE MÉTODO
-    public void removeProdutoCarrinhoCompras(Produto produto){
-        if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
-            ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().removeProduto(produto);
-        }
-        throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
     }
 
     public void limpaCarrinhoCompras(){
@@ -145,18 +143,7 @@ public class SistemaFacade {
     public List<Sala> getSalasDisponiveis(){
         return GerenciaCinema.getSalasCinema();
     }
-    public void editaNomeFilme(String codigo, String novoNomeFilme){
 
-    }
-    public void editaDuracaoFilme(String codigo, int duracao){
-        ;
-    }
-
-    public void editaTipoSalaCinema(int tipoSalaAtual, int NovoTipoSala){
-    }
-    public void editaNomeSalaCinema(int indexSala, String novoNomeSala){
-
-    }
 
     public void removerFilmeCinema(int indexFilme){
         GerenciaCinema.removeFilmeCinema(gerenciaCinema.getFilmeNaSala(indexFilme));
@@ -176,8 +163,9 @@ public class SistemaFacade {
     public ProdutoLanchonete getProdutoLanchonete(String codigo){
         return GerenciaLanchonete.getProdLanchonetePorCodigo(codigo);
     }
+
     public void editaNomeProdutoLanchonete(String nome,String codigo){
-        if (nome.isEmpty() || nome.isBlank() || nome.length() < 4){
+        if (nome.isBlank() || nome.length() < 4){
             throw new IllegalArgumentException("Insira um nome válido!");
         }
         ProdutoLanchonete produtoEditado = getProdutoLanchonete(codigo);
@@ -199,10 +187,6 @@ public class SistemaFacade {
     }
 
 
-
-    public void removerProdutoLanchonete(){
-
-    }
     public void gerarRelatorio(){
         for (String venda: gerenciaSistema.relatorioVendas()){
             System.out.println(venda);
@@ -210,10 +194,6 @@ public class SistemaFacade {
     }
 
     //util
-    //TODO ARRUMAR ESSES MÉTODOS DE ENTRADA
-
-
-
 
     public boolean isLogado(){
         if (Sistema.getLOGADO()!=null){
@@ -223,10 +203,8 @@ public class SistemaFacade {
 
     public void teste(){
         int total = 0;
-        for (List<ProdutoIngressoCinema> lista1: GerenciaCinema.getIngressosDoCinema()){
-            for (Produto produto: lista1){
-                total++;
-            }
+        for (Usuario user: Sistema.getUsuariosCadastrados()){
+            System.out.println(user.getNome());
         }
         System.out.println(total);
     }

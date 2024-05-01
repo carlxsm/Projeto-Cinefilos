@@ -1,11 +1,15 @@
 package model.cinema;
 
-public enum TipoSala {
+import java.io.Serializable;
+
+public enum TipoSala implements Serializable {
+
     BASICA("Básica",20,60), SALA3D("Sala 3D",30,60),VIP("Sala VIP",40,20);
 
     private String nome;
     private double preco;
     private int quantidadePoltronas;
+
     TipoSala(String nome, double preco, int quantidadePoltronas) {
         this.nome = nome;
         this.preco = preco;

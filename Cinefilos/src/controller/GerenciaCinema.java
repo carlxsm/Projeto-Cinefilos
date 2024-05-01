@@ -5,13 +5,17 @@ import model.cinema.Filme;
 import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
 
+import java.io.*;
 import java.util.*;
 
-public class GerenciaCinema {
+public class GerenciaCinema implements Serializable{
+
+    public GerenciaCinema() {
+    }
+
     private static List<Sala> salasCinema = new ArrayList<>();
     private static List<Filme> filmesEmCartaz = new ArrayList<>();
     private static List<List<ProdutoIngressoCinema>> ingressosDoCinema = new ArrayList<>();
-
 
     public static List<Sala> getSalasCinema() {
         return salasCinema;
