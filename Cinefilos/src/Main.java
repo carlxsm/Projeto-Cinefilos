@@ -1,3 +1,5 @@
+import controller.GerenciaLanchonete;
+import model.Produto;
 import view.Menu;
 import facades.SistemaFacade;
 import model.cinema.Filme;
@@ -15,45 +17,13 @@ public class Main {
     public static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-
         // TODO remover os prints do facade
-
         SistemaFacade sistemaFacade = new SistemaFacade();
         try{
             sistemaFacade.abreCinema();
         }catch (FileNotFoundException e){
 
         }
-
-        sistemaFacade.teste();
-
-//        sistemaFacade.criarContaGerente("admin","admin");
-//        sistemaFacade.criarContaCliente("user","user");
-//
-//        sistemaFacade.criaNovaSalaCinema("Sala Normal 01", "BASICA");
-//        sistemaFacade.criaNovaSalaCinema("Sala 3D 01", "VIP");
-//        sistemaFacade.criaNovaSalaCinema("Sala Vip 01", "SALA3D");
-//
-//
-//        sistemaFacade.criaNovoFilme("As Crônicas de Nárnia",180);
-//        sistemaFacade.adicionarNovoFilmeCinema(0,0,1430);
-//        sistemaFacade.adicionarNovoFilmeCinema(2,0,1430);
-//
-//        sistemaFacade.criaNovoFilme("A Fuga das Galinhas",210);
-//        sistemaFacade.adicionarNovoFilmeCinema(1,1,1430);
-//
-//
-//        sistemaFacade.criaNovoFilme("Shrek 2",200);
-//        sistemaFacade.adicionarNovoFilmeCinema(2,2,1430);
-//
-//        sistemaFacade.criaNovoFilme("Shrek 1",200);
-//        sistemaFacade.adicionarNovoFilmeCinema(2,3,1700);
-//
-//
-//        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Salgada", 18,100);
-//        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Doce", 20,100);
-//        sistemaFacade.criaNovoProdutoLanchonete("Coquinha gelada", 8,80);
-
 
         do {
             Menu.menuPrincipal();
@@ -72,7 +42,9 @@ public class Main {
                             Menu.menuSegundario();
                             switch (entradaInteiro()){
                                 case 1: // exibição cinema
-                                    sistemaFacade.exibeIngressosDisponiveis();
+                                    for (String ingresso: sistemaFacade.exibeIngressosDisponiveis()){
+                                        System.out.println(ingresso);
+                                    }
                                     Menu.menuComprarVoltar();
                                     switch (entradaInteiro()){
                                         case 1: // comprar ingresso
@@ -85,7 +57,9 @@ public class Main {
                                     }
                                     break;
                                 case 2: // exibição lanchonete
-                                    sistemaFacade.exibeProdutosLanchoneteDisponiveis();
+                                    for (Produto produto: sistemaFacade.exibeProdutosLanchoneteDisponiveis()){
+                                        System.out.println(produto+ " Quantidade:"+produto.getQuantidade());
+                                    }
                                     Menu.menuComprarVoltar();
                                     switch (entradaInteiro()){
                                         case 1: // comprar
@@ -118,7 +92,9 @@ public class Main {
                                     Menu.imprimeMenuEditarCinema();
                                     switch (entradaInteiro()){
                                         case 1: // Adiciona Filme e Remove filme
-                                            sistemaFacade.exibeIngressosDisponiveis();
+                                            for (String ingresso: sistemaFacade.exibeIngressosDisponiveis()){
+                                                System.out.println(ingresso);
+                                            }
                                             Menu.imprimeMenuAdicionarRemoverFilme();
                                             switch (entradaInteiro()){
                                                 case 1: // Criar filme
@@ -202,7 +178,9 @@ public class Main {
                                     }
                                     break;
                                 case 3: // gerar relatorio de compras
-                                    sistemaFacade.gerarRelatorio();
+                                    for (String venda: sistemaFacade.gerarRelatorio()){
+                                        System.out.println(venda);
+                                    }
                                     break;
                                 case 4: // sair do sistema
                                     sistemaFacade.deslogar();
@@ -215,7 +193,12 @@ public class Main {
                     }
                     break;
                 case 2: // Criar conta
-                    criarConta(sistemaFacade);
+                    try {
+                        criarConta(sistemaFacade);
+                        System.out.println("Usuário criado!");
+                    }catch (IllegalArgumentException iae){
+                        System.out.println(iae.getMessage());
+                    }
                     break;
 
                 case 3: // Sair
@@ -307,9 +290,6 @@ public class Main {
         System.out.println("Senha do usuario: ");
         String senhaCriarUsuario = entradaString();
         sistemaFacade.criarContaCliente(nomeCriarUsuario,senhaCriarUsuario);
-        if (sistemaFacade.isLogado()){
-            System.out.println("Usuário criado com sucesso!");
-        }
     }
 
     public static void fecharPedido(SistemaFacade sistemaFacade) {
@@ -329,7 +309,10 @@ public class Main {
         try {
             sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoProdutoLanchonete,quantidadeProdutoLanchonete);
             System.out.println("Produtos adicionados!");
-            sistemaFacade.verCarrinho();
+            System.out.println("\n- Carrinho de Compras -");
+            for (Produto produto: sistemaFacade.verCarrinho()){
+                System.out.println(produto);
+            }
         }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
             System.err.println(iae.getMessage());
         }
@@ -343,7 +326,10 @@ public class Main {
         try {
             sistemaFacade.adicionaProdutoCarrinhoCompras(escolhaDoIngresso, escolhaQuantidadeIngressos);
             System.out.println("Ingressos adicionados!");
-            sistemaFacade.verCarrinho();
+            System.out.println("\n- Carrinho de Compras -");
+            for (Produto produto: sistemaFacade.verCarrinho()){
+                System.out.println(produto);
+            }
         }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
             System.err.println(iae.getMessage());
         }

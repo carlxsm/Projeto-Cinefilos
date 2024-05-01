@@ -1,19 +1,16 @@
 package facades;
 
-import controller.CarrinhoCompras;
 import controller.GerenciaCinema;
 import controller.GerenciaLanchonete;
 import controller.GerenciaSistema;
 import model.Produto;
 import model.cinema.Filme;
-import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
 import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
 import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
 import model.sistema.usuario.Gerente;
-import model.sistema.usuario.Usuario;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,11 +46,8 @@ public class SistemaFacade {
     }
 
     public void criarContaCliente(String nome, String senha){
-        try {
-            gerenciaSistema.registrarNovoCliente(nome,senha);
-        }catch (IllegalArgumentException iae){
-            System.out.println(iae.getMessage());
-        }
+        gerenciaSistema.registrarNovoCliente(nome,senha);
+
     }
     public void criarContaGerente(String nome, String senha){
         gerenciaSistema.registraNovoGerente(nome,senha);
@@ -96,27 +90,16 @@ public class SistemaFacade {
         ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().esvaziarCarrinho();
     }
 
-    public void verCarrinho(){
-        System.out.println("Carrinho de compras:");
-        if (Sistema.getLOGADO().getCategoriaUsuario() == CategoriaUsuario.CLIENTE){
-            for (Produto produto: ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().getCarrinhoDeCompras()){
-                System.out.println(produto);
-            }
-        }else {
-            throw new IllegalArgumentException("Você não tem permissão para fazer isso!");
-        }
+    public List<Produto> verCarrinho(){
+        return ((Cliente) Sistema.getLOGADO()).getCarrinhoCompras().getCarrinhoDeCompras();
     }
 
-    public void exibeIngressosDisponiveis(){
-        for (String ingresso: gerenciaCinema.getIngressosDisponiveis()){
-            System.out.println(ingresso);
-        }
+    public List<String> exibeIngressosDisponiveis(){
+        return gerenciaCinema.getIngressosDisponiveis();
     }
 
-    public void exibeProdutosLanchoneteDisponiveis(){
-        for (Produto produto: GerenciaLanchonete.getProdutosDisponiveis()){
-            System.out.println(produto+ " Quantidade:"+produto.getQuantidade());
-        }
+    public List<ProdutoLanchonete> exibeProdutosLanchoneteDisponiveis(){
+        return GerenciaLanchonete.getProdutosDisponiveis();
     }
 
     public double finalizaCompra(){
@@ -189,10 +172,8 @@ public class SistemaFacade {
     }
 
 
-    public void gerarRelatorio(){
-        for (String venda: gerenciaSistema.relatorioVendas()){
-            System.out.println(venda);
-        }
+    public List<String> gerarRelatorio(){
+        return gerenciaSistema.relatorioVendas();
     }
 
     //util
@@ -202,52 +183,5 @@ public class SistemaFacade {
             return true;
         }return false;
     }
-
-    public void teste(){
-        int total = 0;
-        for (Usuario user: Sistema.getUsuariosCadastrados()){
-            System.out.println(user.getNome());
-            total++;
-        }
-        System.out.println("Usuarios totais :"+total);
-
-        int totalFilmes = 0;
-        for (Filme filme: GerenciaCinema.getFilmesEmCartaz()){
-            System.out.println(filme.getNomeFilme());
-            totalFilmes++;
-        }
-        System.out.println("Totais de filmes: "+ totalFilmes );
-
-        int totalSalas = 0;
-        for (Sala sala: GerenciaCinema.getSalasCinema()){
-            System.out.println(sala.getNomeSala());
-            totalSalas++;
-        }
-        System.out.println("Totais de salas: "+ totalSalas );
-
-        int totalIngressos = 0;
-        for (List<ProdutoIngressoCinema> ingressos: GerenciaCinema.getIngressosDoCinema()){
-            //System.out.println(ingressos);
-            totalIngressos++;
-        }
-        System.out.println("Totais de ingresso: "+ totalIngressos );
-
-        int totalCompras = 0;
-        for (CarrinhoCompras compras: GerenciaSistema.getTotalCompras()){
-            System.out.println(compras.getTipoCliente());
-            totalCompras++;
-        }
-        System.out.println("Total de compras: "+totalCompras);
-
-        int totalLanchonete = 0;
-        for (ProdutoLanchonete produtoLanchonete: GerenciaLanchonete.getProdutosDisponiveis()){
-            System.out.println(produtoLanchonete);
-            totalLanchonete++;
-        }
-        System.out.println("Total de lanchonete: "+totalLanchonete);
-
-    }
-
-
 
 }
