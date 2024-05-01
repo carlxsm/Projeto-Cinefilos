@@ -128,7 +128,7 @@ public class CarrinhoCompras implements Serializable {
     public void cancelarCompra(){
         for (Produto produto: carrinhoDeCompras){
             if (produto.getCodigo().startsWith("C")){
-                for (List<ProdutoIngressoCinema> lista01: gerenciaCinema.getIngressosDoCinema()){
+                for (List<ProdutoIngressoCinema> lista01: GerenciaCinema.getIngressosDoCinema()){
                     for (ProdutoIngressoCinema produtoIngresso: lista01){
                         if (produtoIngresso.getCodigo().equals(produto.getCodigo())){
                             //lista01.add((ProdutoIngressoCinema) produto);
@@ -138,7 +138,7 @@ public class CarrinhoCompras implements Serializable {
             } else if (produto.getCodigo().startsWith("L")) {
                 for (ProdutoLanchonete prodLanchonete: GerenciaLanchonete.getProdutosDisponiveis()){
                     if (prodLanchonete.getCodigo().equals(produto.getCodigo())){
-                        GerenciaLanchonete.getProdutosDisponiveis().add(GerenciaLanchonete.getProdLanchonetePorCodigo(produto.getCodigo())); // FIXME ta rodando mas acho que era pra fazer um metodo de add.
+                        prodLanchonete.setQuantidade(prodLanchonete.getQuantidade() + produto.getQuantidade());
                     }
                 }
             }
