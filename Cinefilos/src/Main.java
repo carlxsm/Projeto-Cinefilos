@@ -1,11 +1,10 @@
-import controller.Menu;
+import view.Menu;
 import facades.SistemaFacade;
 import model.cinema.Filme;
 import model.cinema.Sala;
 import model.sistema.Sistema;
 import model.sistema.usuario.CategoriaUsuario;
 import model.sistema.usuario.Cliente;
-import view.TelaCliente;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -14,11 +13,8 @@ public class Main {
     public static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
 
-        //TODO resolver login errado, usuario nao existe;
-        // TODO resolver criação de usuarios com nome existente;
+
         // TODO remover os prints do facade
-        // TODO tratar error na main
-        // TODO criar classe menu
 
         SistemaFacade sistemaFacade = new SistemaFacade();
         sistemaFacade.abreCinema();
@@ -56,7 +52,6 @@ public class Main {
             Menu.menuPrincipal();
             switch (entradaInteiro()){
                 case 1: // Login
-                    // TODO acho que da pra colocar isso em algum controller e chamar 1 vez só pelo facade
                     try {
                         fazerLogin(sistemaFacade);
                     }catch (IllegalArgumentException iae){
@@ -66,7 +61,7 @@ public class Main {
                     // Menu Cliente
                     if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.CLIENTE){
                         while (Sistema.getLOGADO() != null){
-                            TelaCliente.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
+                            Menu.imprimeDadosCliente((Cliente) Sistema.getLOGADO());
                             Menu.menuSegundario();
                             switch (entradaInteiro()){
                                 case 1: // exibição cinema
@@ -87,7 +82,7 @@ public class Main {
                                     Menu.menuComprarVoltar();
                                     switch (entradaInteiro()){
                                         case 1: // comprar
-                                            comprarlanchonete(sistemaFacade);
+                                            comprarLanchonete(sistemaFacade);
                                             break;
                                         case 2: // voltar
                                             break;
@@ -110,27 +105,23 @@ public class Main {
                     // Menu gerente
                     else if (sistemaFacade.getTipoUsuarioLogado() == CategoriaUsuario.GERENTE) {
                         while (Sistema.getLOGADO() != null){
-                            System.out.println("1 - Atualizar exibições | 2 - Atualiza Lanchonete | 3 - Relatório | 4 - Sair");
+                            Menu.imprimeMenuGerente();
                             switch (entradaInteiro()){
                                 case 1: // Atualizar exibicoes
-                                    System.out.println("1 - Editar cinema | 2 - Sair");
+                                    Menu.imprimeMenuEditarCinema();
                                     switch (entradaInteiro()){
                                         case 1: // Adiciona Filme e Remove filme
                                             sistemaFacade.exibeIngressosDisponiveis();
-                                            System.out.println("1 - Cria Filme | 2 - Remover filme | 3 - Cria Ingresso | 4 - Volta");
+                                            Menu.imprimeMenuAdicionarRemoverFilme();
                                             switch (entradaInteiro()){
                                                 case 1: // Criar filme
                                                     try {
-                                                        String nomeFilme = entradaString();
-                                                        int duracaoFilme = entradaInteiro();
-                                                        sistemaFacade.criaNovoFilme(nomeFilme,duracaoFilme);
-                                                        System.out.println("Filme criada com sucesso!");
+                                                        criarFilme(sistemaFacade);
                                                     }catch (IllegalArgumentException iae){
                                                         System.err.println(iae.getMessage());
                                                     }
                                                     break;
                                                 case 2: // Remover filme
-                                                    // TODO Isso aqui abaixo tem que ser um método que vai ser reaproveitado no case 3.
                                                     exibeListaDeFilmes(sistemaFacade);
                                                     try {
                                                         System.out.println("Informe o index do filme que deseja remover:");
@@ -141,7 +132,6 @@ public class Main {
                                                     break;
                                                 case 3 : // Cria ingresso
                                                     exibeListaDeFilmes(sistemaFacade);
-
                                                     System.out.println("Informe o index do filme :");
                                                     int indexFilme = entradaInteiro();
 
@@ -153,10 +143,8 @@ public class Main {
                                                     int horario = entradaInteiro();
                                                     try {
                                                         sistemaFacade.adicionarNovoFilmeCinema(indexSala,indexFilme,horario);
-                                                    }catch (IllegalArgumentException iae){
+                                                    }catch (IllegalArgumentException | IndexOutOfBoundsException iae){
                                                         System.err.println(iae.getMessage());
-                                                    }catch (IndexOutOfBoundsException iobe){
-                                                        System.err.println(iobe.getMessage());
                                                     }
                                                     break;
                                                 case 4 : // voltar
@@ -219,7 +207,6 @@ public class Main {
                         }
                     }
                     break;
-                // TODO acho que da pra colocar isso em algum controller e chamar 1 vez só pelo facade
                 case 2: // Criar conta
                     criarConta(sistemaFacade);
                     break;
@@ -236,10 +223,12 @@ public class Main {
 
     }
 
-
-
-
-
+    private static void criarFilme(SistemaFacade sistemaFacade) {
+        String nomeFilme = entradaString();
+        int duracaoFilme = entradaInteiro();
+        sistemaFacade.criaNovoFilme(nomeFilme,duracaoFilme);
+        System.out.println("Filme criada com sucesso!");
+    }
 
     private static void exibeListaDeSalas(SistemaFacade sistemaFacade) {
         int k = 0;
@@ -318,14 +307,14 @@ public class Main {
 
     public static void fecharPedido(SistemaFacade sistemaFacade) {
         try{
-            System.out.println("Total: R$"+ sistemaFacade.finalizaCompra()); //TODO tentar mandar isso para um método da view
+            System.out.println("Total: R$"+ sistemaFacade.finalizaCompra());
             System.out.println("Compra concluida");
         }catch (NoSuchElementException iae){
             System.out.println(iae.getMessage());
         }
     }
 
-    public static void comprarlanchonete(SistemaFacade sistemaFacade) {
+    public static void comprarLanchonete(SistemaFacade sistemaFacade) {
         System.out.println("Insira o código do produto que deseja comprar");
         String escolhaDoProdutoLanchonete = entradaString();
         System.out.println("Insira a quantidade");
