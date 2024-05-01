@@ -1,10 +1,12 @@
 package facades;
 
+import controller.CarrinhoCompras;
 import controller.GerenciaCinema;
 import controller.GerenciaLanchonete;
 import controller.GerenciaSistema;
 import model.Produto;
 import model.cinema.Filme;
+import model.cinema.ProdutoIngressoCinema;
 import model.cinema.Sala;
 import model.lanchonete.ProdutoLanchonete;
 import model.sistema.Sistema;
@@ -205,8 +207,45 @@ public class SistemaFacade {
         int total = 0;
         for (Usuario user: Sistema.getUsuariosCadastrados()){
             System.out.println(user.getNome());
+            total++;
         }
-        System.out.println(total);
+        System.out.println("Usuarios totais :"+total);
+
+        int totalFilmes = 0;
+        for (Filme filme: GerenciaCinema.getFilmesEmCartaz()){
+            System.out.println(filme.getNomeFilme());
+            totalFilmes++;
+        }
+        System.out.println("Totais de filmes: "+ totalFilmes );
+
+        int totalSalas = 0;
+        for (Sala sala: GerenciaCinema.getSalasCinema()){
+            System.out.println(sala.getNomeSala());
+            totalSalas++;
+        }
+        System.out.println("Totais de salas: "+ totalSalas );
+
+        int totalIngressos = 0;
+        for (List<ProdutoIngressoCinema> ingressos: GerenciaCinema.getIngressosDoCinema()){
+            //System.out.println(ingressos);
+            totalIngressos++;
+        }
+        System.out.println("Totais de ingresso: "+ totalIngressos );
+
+        int totalCompras = 0;
+        for (CarrinhoCompras compras: GerenciaSistema.getTotalCompras()){
+            System.out.println(compras.getTipoCliente());
+            totalCompras++;
+        }
+        System.out.println("Total de compras: "+totalCompras);
+
+        int totalLanchonete = 0;
+        for (ProdutoLanchonete produtoLanchonete: GerenciaLanchonete.getProdutosDisponiveis()){
+            System.out.println(produtoLanchonete);
+            totalLanchonete++;
+        }
+        System.out.println("Total de lanchonete: "+totalLanchonete);
+
     }
 
 

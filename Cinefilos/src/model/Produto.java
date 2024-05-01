@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public abstract class Produto {
+public abstract class Produto implements Serializable {
 
     String nome;
     double preco;

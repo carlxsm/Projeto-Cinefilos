@@ -27,32 +27,32 @@ public class Main {
 
         sistemaFacade.teste();
 
-        sistemaFacade.criarContaGerente("admin","admin");
-        sistemaFacade.criarContaCliente("user","user");
-
-        sistemaFacade.criaNovaSalaCinema("Sala Normal 01", "BASICA");
-        sistemaFacade.criaNovaSalaCinema("Sala 3D 01", "VIP");
-        sistemaFacade.criaNovaSalaCinema("Sala Vip 01", "SALA3D");
-
-
-        sistemaFacade.criaNovoFilme("As Crônicas de Nárnia",180);
-        sistemaFacade.adicionarNovoFilmeCinema(0,0,1430);
-        sistemaFacade.adicionarNovoFilmeCinema(2,0,1430);
-
-        sistemaFacade.criaNovoFilme("A Fuga das Galinhas",210);
-        sistemaFacade.adicionarNovoFilmeCinema(1,1,1430);
-
-
-        sistemaFacade.criaNovoFilme("Shrek 2",200);
-        sistemaFacade.adicionarNovoFilmeCinema(2,2,1430);
-
-        sistemaFacade.criaNovoFilme("Shrek 1",200);
-        sistemaFacade.adicionarNovoFilmeCinema(2,3,1700);
-
-
-        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Salgada", 18,100);
-        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Doce", 20,100);
-        sistemaFacade.criaNovoProdutoLanchonete("Coquinha gelada", 8,80);
+//        sistemaFacade.criarContaGerente("admin","admin");
+//        sistemaFacade.criarContaCliente("user","user");
+//
+//        sistemaFacade.criaNovaSalaCinema("Sala Normal 01", "BASICA");
+//        sistemaFacade.criaNovaSalaCinema("Sala 3D 01", "VIP");
+//        sistemaFacade.criaNovaSalaCinema("Sala Vip 01", "SALA3D");
+//
+//
+//        sistemaFacade.criaNovoFilme("As Crônicas de Nárnia",180);
+//        sistemaFacade.adicionarNovoFilmeCinema(0,0,1430);
+//        sistemaFacade.adicionarNovoFilmeCinema(2,0,1430);
+//
+//        sistemaFacade.criaNovoFilme("A Fuga das Galinhas",210);
+//        sistemaFacade.adicionarNovoFilmeCinema(1,1,1430);
+//
+//
+//        sistemaFacade.criaNovoFilme("Shrek 2",200);
+//        sistemaFacade.adicionarNovoFilmeCinema(2,2,1430);
+//
+//        sistemaFacade.criaNovoFilme("Shrek 1",200);
+//        sistemaFacade.adicionarNovoFilmeCinema(2,3,1700);
+//
+//
+//        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Salgada", 18,100);
+//        sistemaFacade.criaNovoProdutoLanchonete("Pipoca Doce", 20,100);
+//        sistemaFacade.criaNovoProdutoLanchonete("Coquinha gelada", 8,80);
 
 
         do {

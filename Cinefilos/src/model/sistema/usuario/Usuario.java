@@ -1,8 +1,9 @@
 package model.sistema.usuario;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Usuario {
+public abstract class Usuario implements Serializable {
 
     private String nome;
     private String senha;

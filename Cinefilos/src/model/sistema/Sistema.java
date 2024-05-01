@@ -37,7 +37,7 @@ public class Sistema implements Serializable{
     public static Usuario LOGADO = null;
     public static boolean statusSistema = true;
 
-    private final static ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
+    private static ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
 
     public int adicionaNovoUsuario(Usuario usuario){
         usuariosCadastrados.add(usuario);
@@ -89,13 +89,14 @@ public class Sistema implements Serializable{
         ObjectInputStream in = null;
         try {
             in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(INFO_USUARIOS_CRIADOS)));
-            List<Usuario> usuariosLidos = (List<Usuario>) in.readObject();
-            for (Usuario usuarioLido : usuariosLidos) {
-                if (!usuariosCadastrados.contains(usuarioLido)) {
-                    logger.info("Lista de usuários salva com sucesso.");
-                    usuariosCadastrados.add(usuarioLido);
-                }
-            }
+            usuariosCadastrados = (ArrayList<Usuario>) in.readObject();
+
+//            for (Usuario usuarioLido : usuariosLidos) {
+//                if (!usuariosCadastrados.contains(usuarioLido)) {
+//                    logger.info("Lista de usuários salva com sucesso.");
+//                    usuariosCadastrados.add(usuarioLido);
+//                }
+//            }
         } finally {
             if (in != null) {
                 in.close();
