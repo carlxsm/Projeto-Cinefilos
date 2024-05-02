@@ -21,6 +21,8 @@ public class Main {
         // TODO remover os prints do facade
         SistemaFacade sistemaFacade = new SistemaFacade();
         sistemaFacade.criarContaGerente("admin", "admin@admin.com", "admin");
+
+
         try {
             sistemaFacade.abreCinema();
         } catch (FileNotFoundException e) {
@@ -223,7 +225,9 @@ public class Main {
     }
 
     private static void criarFilme(SistemaFacade sistemaFacade) {
+        System.out.println("Insira o nome do filme:");
         String nomeFilme = entradaString();
+        System.out.println("Insira a duração do filme");
         int duracaoFilme = entradaInteiro();
         sistemaFacade.criaNovoFilme(nomeFilme, duracaoFilme);
         System.out.println("Filme criada com sucesso!");
